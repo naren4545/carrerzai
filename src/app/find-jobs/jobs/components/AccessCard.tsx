@@ -5,7 +5,7 @@ interface AccessCardProps {
   title: string;
   message: string;
   buttonText: string;
- imgUrl:String
+ imgUrl:string
   onButtonClick: () => void;
 }
 
