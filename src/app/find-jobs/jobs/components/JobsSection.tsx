@@ -17,7 +17,7 @@ const JobList = () => {
     const params = new URLSearchParams(window.location.search);
     
     // Set the new page parameter
-    params.set('page', newPage); // This will add or update the page parameter
+    params.set('page', newPage.toString()); // This will add or update the page parameter
 
     // Construct the new URL with the existing parameters and the updated page parameter
     const newUrl = `${window.location.pathname}?${params.toString()}`;
