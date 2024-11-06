@@ -23,7 +23,7 @@ const JobList = () => {
     const newUrl = `${window.location.pathname}?${params.toString()}`;
 
     // Update the route with the new URL
-    router.push(newUrl, undefined, { shallow: true });
+    router.push(newUrl, { shallow: true });
     // Updates the URL without a full page reload
   };
 
