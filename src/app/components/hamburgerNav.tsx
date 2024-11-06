@@ -66,7 +66,7 @@ console.log(isOpen)
             </button>
           </div>
           <nav className="pt-5">
-            <SidebarItem onclick={toggleSidebar} label="Home" linkTo="" />
+            <SidebarItem onclick={toggleSidebar} label="Home" linkTo="/" />
             <SidebarItem onclick={toggleSidebar} label="Find Jobs" linkTo="/find-jobs" />
             <SidebarItem onclick={toggleSidebar} label="Find Talent" linkTo="/find-talent" />
             <SidebarItem onclick={toggleSidebar} label="Contact" linkTo="/contact" />
