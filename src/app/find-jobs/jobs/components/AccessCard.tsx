@@ -6,12 +6,13 @@ interface AccessCardProps {
   message: string;
   buttonText: string;
  imgUrl:string
+ className:string
   onButtonClick: () => void;
 }
 
-const AccessCard: React.FC<AccessCardProps> = ({ title, message, buttonText, onButtonClick,imgUrl }) => {
+const AccessCard: React.FC<AccessCardProps> = ({ className="",title, message, buttonText, onButtonClick,imgUrl }) => {
   return (
-    <div className="max-w-xs py-8 h-fit bg-white border text-center mx-auto border-gray-200 rounded-lg shadow-md">
+    <div className={"md:max-w-xs w-full py-8 h-fit bg-white border text-center mx-auto border-gray-200 rounded-lg shadow-md "+className}>
       <h2 className="text-2xl font-medium text-center mb-2">{title}</h2>
       <hr className='border-black'></hr>
       <div className="flex justify-center mb-4">

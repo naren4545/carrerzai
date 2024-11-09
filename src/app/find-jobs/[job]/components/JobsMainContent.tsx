@@ -6,7 +6,7 @@ import location from '../../../assests/mdi_location.svg'
 import salary from '../../../assests/₹.svg'
 import exprience from '../../../assests/exprience.svg'
 import timeFill from '../../../assests/mingcute_time-fill.svg'
-import Link from 'next/link';
+
 interface JobCardProps {
   job: {
     _id:string
@@ -19,7 +19,7 @@ interface JobCardProps {
   };
 }
 
-const JobCard: React.FC<JobCardProps> = ({ job }) => {
+const JobsMainContent: React.FC<JobCardProps> = ({ job }) => {
   const timeSincePosted = (date: string) => {
     const timeDiff = Date.now() - new Date(date).getTime();
     const mins = Math.floor(timeDiff / (1000 * 60));
@@ -27,15 +27,15 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
   };
 
   return (
-    <Link href={"/find-jobs/"+job._id}>
-    <div className="border rounded-lg p-4 shadow-md h-fit bg-white max-w-[905px]">
+   
+    <div className="  pb-7 p-7  h-fit bg-white border-b border-black ">
       <div className="flex justify-between items-center mb-3">
         <div className='flex gap-5'>
         <div>
       <Image src={companyImg}  className="md:w-auto w-[36px]" alt=''/>
         </div>
         <div>
-          <h3 className="md::text-[28px] text-xl md::leading-[42px] font-semibold">{job.title}</h3>
+          <h3 className="md:text-[28px] text-sm md:leading-[42px] font-semibold">{job.title}</h3>
           <p className="md:text-2xl text-sm text-gray-500">{job.company}</p>
         </div>
         </div>
@@ -68,14 +68,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
           </div>
         </div>
 
-        <div className="flex flex-row md:flex-col gap-3 md:text-2xl text-sm">
-          <button className="text-blue-600 border  border-blue-600 px-7 py-2 rounded md:mb-2">
-            View Details
-          </button>
-          <button className="bg-blue-600 text-white px-7 py-2 rounded">
-            Apply
-          </button>
-        </div>
+      
       </div>
 
       <div className="mt-3 md:text-xl text-[10px] text-[#FF6700] flex items-center gap-5">
@@ -83,8 +76,8 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
         {timeSincePosted(job.createdAt)}</a> • <span className="ml-1 md:text-sm text-[10px]">Be an early applicant</span>
       </div>
     </div>
-    </Link>
+    
   );
 };
 
-export default JobCard;
+export default JobsMainContent;

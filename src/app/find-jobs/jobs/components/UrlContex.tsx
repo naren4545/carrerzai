@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 // Define the shape of the context value
 interface JobsContextType {
     jobs: any[]; // Replace `any` with a more specific type if possible
@@ -20,7 +20,7 @@ export const JobsProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [totalPages, setTotalPages] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
-   
+    const searchParams = useSearchParams();
 
 
 // useEffect(()=>{
@@ -54,17 +54,22 @@ let url=""
             setLoading(false);
         }
     };
-
+   
     useEffect(() => {
         const queryPage = new URLSearchParams(window.location.search).get('page');
+
+      
+
         const currentPage = queryPage ? parseInt(queryPage, 10) : 1;
         setPage(currentPage);
         fetchJobs(currentPage);
-    }, [router]);
+        console.log(window.location.search +"nnn")
+    }, [searchParams.get('location'),searchParams.get('skilltag')]);
 
     useEffect(() => {
+        
         fetchJobs(page);
-    }, [page]);
+    }, [page,router]);
 
     return (
         <JobsContext.Provider value={{ jobs, page, totalPages, setPage, loading }}>
