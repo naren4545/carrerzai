@@ -42,7 +42,7 @@ start your career journey now!
            
           </div>
           <div className="pt-6 px-3 w-full max-w-[1100px]">
-          <SearchBar/>
+          <SearchBar jobs={false}/>
           </div>
         </div>
       </div>
