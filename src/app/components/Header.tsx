@@ -7,6 +7,8 @@ import search from "../assests/ic_sharp-search.svg"; // Adjust path as necessary
 import { usePathname } from "next/navigation";
 import RegisterDropdown from "./RegisterDropdown";
 import Hamburger from "./HamBurger";
+import Dropdown from "./Dropdown"; // Import Dropdown component
+
 const Header: React.FC = () => {
   const pathname = usePathname();
 
@@ -17,7 +19,7 @@ const Header: React.FC = () => {
         {/* Logo and Buttons */}
         <div className="flex flex-row items-center justify-between max-w-[1350px] w-full mx-auto ">
           <div className="flex items-center space-x-2">
-            <Hamburger/>
+            <Hamburger />
             <Image
               src={logo}
               alt="CareerZa Logo"
@@ -49,16 +51,21 @@ const Header: React.FC = () => {
           >
             Home
           </Link>
-          <Link
-            href="/find-jobs"
-            className={`hover:text-blue-600 ${
-              pathname === "/find-jobs"
-                ? "text-blue-600 border-b-2 border-blue-600"
-                : ""
-            }`}
-          >
-            Find Jobs
-          </Link>
+          <div className="relative group">
+            {/* "Find Jobs" Link with Hover */}
+            <Link
+              href="/find-jobs"
+              className={`hover:text-blue-600 ${
+                pathname === "/find-jobs"
+                  ? "text-blue-600 border-b-2 border-blue-600"
+                  : ""
+              }`}
+            >
+              Find Jobs
+            </Link>
+            {/* Dropdown will appear when hovering over the parent link */}
+            <Dropdown />
+          </div>
           <Link
             href="/find-talent"
             className={`hover:text-blue-600 ${

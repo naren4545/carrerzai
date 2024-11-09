@@ -37,7 +37,7 @@ const JobList = () => {
 
 
 
-  if(!jobs){
+  if(!jobs || !jobs.length && !loading){
 
 return <p>no data found</p>
 
@@ -57,18 +57,18 @@ return <p>no data found</p>
             ))}
           </div>
           <div className='col-span-1 flex flex-col gap-8'>
-<AccessCard title='Want Full Access?' buttonText='Login Now' message='Please log in to view full job 
+<AccessCard className='' title='Want Full Access?' buttonText='Login Now' message='Please log in to view full job 
 details, and apply job 
 that you want. ' onButtonClick={()=>{}}  imgUrl={login.src}/>
 
-<AccessCard title='Scam Alert' buttonText='Learn More' message='Stay Safe Online !
+<AccessCard title='Scam Alert' className="md:block hidden" buttonText='Learn More' message='Stay Safe Online !
 Beware of fake job offers. Verify 
 the job details and company 
 before sharing any 
 personal information. ' onButtonClick={()=>{}}  imgUrl={learnMore.src}/>
 
 
-<AccessCard title='Follow Companies' buttonText='Follow Now' message="Follow Your Favorite Companies !
+<AccessCard title='Follow Companies' className="md:block hidden" buttonText='Follow Now' message="Follow Your Favorite Companies !
 Stay updated on new job 
 postings and company news 
 by following businesses 
