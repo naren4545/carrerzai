@@ -4,9 +4,7 @@ import Footer from "../../components/Footer";
 import ProTipsSection from "@/app/components/ProTips";
 
 interface JobPageProps {
-    params: {
-      job: string;
-    };
+    params: any;
   }
   
   const JobPage =async ({ params }: JobPageProps) => {
