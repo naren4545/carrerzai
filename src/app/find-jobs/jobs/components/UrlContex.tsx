@@ -1,6 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+
 // Define the shape of the context value
 interface JobsContextType {
     jobs: any[]; // Replace `any` with a more specific type if possible
