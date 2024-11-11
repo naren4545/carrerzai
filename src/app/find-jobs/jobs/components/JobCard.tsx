@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+
 import companyImg from '../../../assests/companyImgPlaceholder.svg'
 import save from '../../../assests/stash_save-ribbon-solid.svg'
 import location from '../../../assests/mdi_location.svg'
@@ -27,7 +27,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
   };
 
   return (
-    <Link href={"/find-jobs/"+job._id}>
+    <Link href={`/find-jobs/${job._id}`} key={job._id}>
     <div className="border rounded-lg p-4 shadow-md h-fit bg-white max-w-[905px]">
       <div className="flex justify-between items-center mb-3">
         <div className='flex gap-5'>
@@ -39,7 +39,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
           <p className="md:text-2xl text-sm text-gray-500">{job.company}</p>
         </div>
         </div>
-        <button className="text-gray-500 hover:text-gray-700">
+        <button type='button' className="text-gray-500 hover:text-gray-700">
           <Image src={save} alt="Bookmark" className="" />
         </button>
       </div>
@@ -69,17 +69,17 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
         </div>
 
         <div className="flex flex-row md:flex-col gap-3 md:text-2xl text-sm">
-          <button className="text-blue-600 border  border-blue-600 px-7 py-2 rounded md:mb-2">
+          <button type='button' className="text-blue-600 border  border-blue-600 px-7 py-2 rounded md:mb-2">
             View Details
           </button>
-          <button className="bg-blue-600 text-white px-7 py-2 rounded">
+          <button type='button' className="bg-blue-600 text-white px-7 py-2 rounded">
             Apply
           </button>
         </div>
       </div>
 
       <div className="mt-3 md:text-xl text-[10px] text-[#FF6700] flex items-center gap-5">
-       <a href=''  className='flex items-center p-2 rounded-lg border-[#FF6700] border '> <Image src={timeFill} alt="Clock" className="w-4 h-4 mr-2" />
+       <a href='/'  className='flex items-center p-2 rounded-lg border-[#FF6700] border '> <Image src={timeFill} alt="Clock" className="w-4 h-4 mr-2" />
         {timeSincePosted(job.createdAt)}</a> • <span className="ml-1 md:text-sm text-[10px]">Be an early applicant</span>
       </div>
     </div>

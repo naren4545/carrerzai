@@ -68,6 +68,7 @@ const SearchJob: React.FC = () => {
 
           <div className="text-center">
             <button
+            type="button"
               onClick={handleSearch}
               className="py-3 px-5 mx-auto bg-[#FFBA00] shadow-lg text-white font-semibold rounded-md hover:bg-yellow-600 transition"
             >

@@ -1,6 +1,6 @@
 // components/InfoSection.tsx
 import Image from 'next/image';
-import React from 'react';
+
 import pdr from '../assests/pdrinfosec.svg';
 
 const InfoSection: React.FC = () => {

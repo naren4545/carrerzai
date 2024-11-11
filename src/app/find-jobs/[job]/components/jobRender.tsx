@@ -1,5 +1,4 @@
 
-import React from 'react'
 import JobsMainContent from './JobsMainContent'
 import JobDetails from './JobDetails'
 import SkillTags from './SkillTag'

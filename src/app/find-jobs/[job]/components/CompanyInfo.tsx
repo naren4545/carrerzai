@@ -1,4 +1,4 @@
-import React from "react";
+
 import Image from "next/image";
 import company from '../../../assests/Group 517.svg'
 import addressImg from '../../../assests/Group 517 (1).svg'

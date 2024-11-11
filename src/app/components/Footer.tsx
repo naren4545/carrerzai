@@ -1,4 +1,4 @@
-import React from 'react'
+
 import SubscribeForm from './SubscribeForm'
 import FooterContent from './FooterContent'
 import Copyright from './Copyright'

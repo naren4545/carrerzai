@@ -22,8 +22,7 @@ const SidebarItem = ({ label, linkTo, onclick }: SidebarItemProps) => {
     <Link href={linkTo} onClick={onclick}>
       <div
         className={
-          "flex items-center space-x-3 cursor-pointer hover:bg-gray-200 hover:text-black rounded-lg p-3" +
-          style
+          `flex items-center space-x-3 cursor-pointer hover:bg-gray-200 hover:text-black rounded-lg p-3 ${style}` 
         }
       >
         <span>{label}</span>
@@ -48,6 +47,7 @@ const Hamburger = () => {
     <div className="flex lg:hidden">
       <div className="lg:hidden p-4 ">
         <button
+        type="button"
           onClick={toggleSidebar}
           className="text-black hover:text-white focus:outline-none focus:text-white"
         >
