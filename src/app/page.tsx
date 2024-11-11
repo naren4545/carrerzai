@@ -12,7 +12,7 @@ export default function Home() {
 const jobSekker=true;
 
 
-RedirectIfJobSeeker(jobSekker)
+// RedirectIfJobSeeker(jobSekker)
 	return (
 		<>
      
