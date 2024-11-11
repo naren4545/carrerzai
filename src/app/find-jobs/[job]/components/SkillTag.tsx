@@ -1,5 +1,5 @@
 // SkillTags.tsx
-import React from 'react';
+
 
 interface SkillTagsProps {
   skills: string[];

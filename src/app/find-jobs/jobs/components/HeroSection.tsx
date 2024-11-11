@@ -1,4 +1,4 @@
-import React from 'react';
+
 import search from '../../../assests/ic_sharp-search (1).svg'
 import location from '../../../assests/ei_location.svg'
 import Image from 'next/image';

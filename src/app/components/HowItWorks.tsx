@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Cyp from "../assests/CreateYourProfile.svg"
 import Image from 'next/image';
 
@@ -67,14 +67,14 @@ const HowItWorks: React.FC = () => {
       <div className='flex h-full items-center pr-4 w-[50%] lg:w-fit pb-5' >
         <h2 className='md:text-5xl text-xl w-full font-py relative lg:w-fit text-center lg:text-left'>Job Seekers
 
-        <div className='bg-[linear-gradient(180deg,_transparent_50%,_#FFBA00_100%)] absolute w-full h-[50px] bottom-[-6px]'></div>
+        <div className='bg-[linear-gradient(180deg,_transparent_50%,_#FFBA00_100%)] absolute w-full h-[50px] bottom-[-6px]'/>
         </h2>
       </div>
           {data1.map(({ img, title, description },index) => (
             <div key={title} className="flex lg:flex-col  text-left w-[63%] ml-auto lg:w-fit">
              <div className='flex flex-col lg:items-center gap-1 lg:flex-row lg:w-full w-[25%] '>
               <Image src={img} className='w-[56px] md:w-fit'alt=''/>
-             {index===3?"": <div className='lg:border-b border-r ml-[25px] md:ml-0 lg:w-full w-[1px] border-[#B6B6B6] lg:h-fit h-[50px]'></div>}
+             {index===3?"": <div className='lg:border-b border-r ml-[25px] md:ml-0 lg:w-full w-[1px] border-[#B6B6B6] lg:h-fit h-[50px]'/>}
               </div>
               <div className='lg:w-ful w-[75%]'>
               <h4 className="font-semibold md:text-2xl text-sm font-py py-5">{title}</h4>
@@ -91,7 +91,7 @@ const HowItWorks: React.FC = () => {
         <div className='flex w-[50%] ml-auto h-full items-center justify-end pr-4 lg:hidden' >
   <h2 className='md:text-5xl text-xl font-py relative w-full text-center'>Recruiters
 
-  <div className='bg-[linear-gradient(180deg,_transparent_50%,_#FFBA00_100%)] absolute w-full h-[50px] bottom-[-6px]'></div>
+  <div className='bg-[linear-gradient(180deg,_transparent_50%,_#FFBA00_100%)] absolute w-full h-[50px] bottom-[-6px]'/>
   </h2>
 </div>
 
@@ -99,7 +99,7 @@ const HowItWorks: React.FC = () => {
             <div key={title} className="flex lg:flex-col  text-left w-[63%] mr-auto lg:w-fit">
              <div className='flex flex-col lg:items-center gap-1 lg:flex-row lg:w-full w-[25%] '>
               <Image src={img} className='w-[56px] md:w-fit'alt=''/>
-             {index===3?"": <div className='lg:border-b border-r ml-[25px] md:ml-0 lg:w-full w-[1px] border-[#B6B6B6] lg:h-fit h-[50px]'></div>}
+             {index===3?"": <div className='lg:border-b border-r ml-[25px] md:ml-0 lg:w-full w-[1px] border-[#B6B6B6] lg:h-fit h-[50px]'/>}
               </div>
               <div className='lg:w-ful w-[75%]'>
               <h4 className="font-semibold md:text-2xl text-sm font-py py-5">{title}</h4>
@@ -113,7 +113,7 @@ const HowItWorks: React.FC = () => {
 <div className='lg:flex hidden h-full items-center pr-4' >
   <h2 className='text-5xl font-py relative w-fit'>Recruiters
 
-  <div className='bg-[linear-gradient(180deg,_transparent_50%,_#FFBA00_100%)] absolute w-full h-[50px] bottom-[-6px]'></div>
+  <div className='bg-[linear-gradient(180deg,_transparent_50%,_#FFBA00_100%)] absolute w-full h-[50px] bottom-[-6px]'/>
   </h2>
 </div>
   </div>

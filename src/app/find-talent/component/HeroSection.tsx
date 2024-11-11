@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React from 'react'
+
 import bannerImg from '../../assests/herosectinbg.png'
 import topright from '../../assests/top-right.svg'
 export default function HeroSection() {

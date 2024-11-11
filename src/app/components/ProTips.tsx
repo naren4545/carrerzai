@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const ProTipsSection: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const ProTipsSection: React.FC = () => {
           placeholder="Enter your Email ID..."
           className="flex-1 placeholder:md:text-2xl placeholder:text-[10px] px-4 py-2 mb-2 sm:mb-0 sm:mr-2 rounded-md outline-none text-gray-700"
         />
-        <button className="bg-[#FFBA00] text-white font-medium md:text-3xl text-sm px-5 py-3 rounded-md hover:bg-yellow-500">
+        <button type='button' className="bg-[#FFBA00] text-white font-medium md:text-3xl text-sm px-5 py-3 rounded-md hover:bg-yellow-500">
           Get Expert Tips
         </button>
       </div>

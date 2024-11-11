@@ -1,6 +1,7 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import type { ReactNode } from 'react';
 
 // Define the shape of the context value
 interface JobsContextType {
@@ -23,31 +24,18 @@ export const JobsProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const router = useRouter();
     const searchParams = useSearchParams();
 
-
-// useEffect(()=>{
-
-//     const params = new URLSearchParams(window.location.search);
-//     params.delete('page');
-//     let dynamicQuery=params.toString()
-//     console.log(dynamicQuery+"hii")
-//     seturl(dynamicQuery)
-
-// },[])
-
     const fetchJobs = async (currentPage: number) => {
+        console.log(currentPage)
         setLoading(true);
         try {
-
-let url=""
+            let url = "";
             const params = new URLSearchParams(window.location.search);
-                params.delete('page');
-                url=params.toString()
+            params.delete('page');
+            url = params.toString();
 
-            console.log(url)
             const response = await fetch(`https://www.careerzai.com/v1/job/filtered?${url}&page=${currentPage}&limit=10`);
             const data = await response.json();
-            console.log(data.jobs,"texdt")
-            setJobs(data.jobs );
+            setJobs(data.jobs);
             setTotalPages(data.totalPages);
         } catch (error) {
             console.error('Failed to fetch jobs:', error);
@@ -55,22 +43,17 @@ let url=""
             setLoading(false);
         }
     };
-   
+
     useEffect(() => {
-        const queryPage = new URLSearchParams(window.location.search).get('page');
-
-      
-
-        const currentPage = queryPage ? parseInt(queryPage, 10) : 1;
+        const queryPage = searchParams.get('page');
+        const currentPage = queryPage ? Number.parseInt(queryPage, 10) : 1;
         setPage(currentPage);
         fetchJobs(currentPage);
-        console.log(window.location.search +"nnn")
-    }, [searchParams.get('location'),searchParams.get('skilltag')]);
+    }, [searchParams.get('location'), searchParams.get('skilltag'),searchParams.get('page')]);
 
     useEffect(() => {
-        
         fetchJobs(page);
-    }, [page,router]);
+    }, [page, router]);
 
     return (
         <JobsContext.Provider value={{ jobs, page, totalPages, setPage, loading }}>

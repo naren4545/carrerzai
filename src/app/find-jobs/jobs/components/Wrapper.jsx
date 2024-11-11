@@ -1,4 +1,4 @@
-import React from 'react'
+
 import JobList from './JobsSection'
 import { JobsProvider } from './UrlContex';
 import HeroSection from './HeroSection'

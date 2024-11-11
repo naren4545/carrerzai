@@ -1,5 +1,5 @@
 // JobRequirements.tsx
-import React from 'react';
+
 import Image from 'next/image';
 import experienceIcon from '../../../assests/uil_suitcase.svg'
 import educationIcon from '../../../assests/fluent-mdl2_education.png'

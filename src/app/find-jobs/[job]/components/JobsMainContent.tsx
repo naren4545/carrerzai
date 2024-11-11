@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+
 import companyImg from '../../../assests/companyImgPlaceholder.svg'
 import save from '../../../assests/stash_save-ribbon-solid.svg'
 import location from '../../../assests/mdi_location.svg'
@@ -39,7 +39,7 @@ const JobsMainContent: React.FC<JobCardProps> = ({ job }) => {
           <p className="md:text-2xl text-sm text-gray-500">{job.company}</p>
         </div>
         </div>
-        <button className="text-gray-500 hover:text-gray-700">
+        <button type='button' className="text-gray-500 hover:text-gray-700">
           <Image src={save} alt="Bookmark" className="" />
         </button>
       </div>
