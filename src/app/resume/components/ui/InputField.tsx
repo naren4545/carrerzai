@@ -8,7 +8,7 @@ interface Option {
 
 interface InputFieldProps {
   label: string;
-  type?: "text" | "radio" | "select" | "textarea" | "message" | "password" | "email" | "number";
+  type?: "text" | "radio" | "select" | "textarea" | "message" | "password" | "date" | "email" | "number";
   placeholder?: string;
   name: string;
   value: string | number;
