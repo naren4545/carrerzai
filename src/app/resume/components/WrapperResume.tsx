@@ -89,7 +89,7 @@ const WrapperResume: React.FC<WrapperResumeProps> = ({ userProfile }) => {
   userAddress:userProfile.userAddress,
   userPhoneNumber: userProfile.userPhoneNumber,
  userGender: "Female",
-    
+ userQualification:userProfile.education[0].degree
     }
   return (
     <div className="py-10 max-w-[1340px] mx-auto">
