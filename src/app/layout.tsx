@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-
+import {  DualAuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,10 +16,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` antialiased`}
+        className=" antialiased"
       >
+
+<DualAuthProvider>
         {children}
-        <div id="portal-root"></div>
+        <div id="portal-root"/>
+        </DualAuthProvider>
 
       </body>
     </html>

@@ -4,7 +4,7 @@ import bannerImg from '../../assests/herosectinbg.png'
 import topright from '../../assests/top-right.svg'
 export default function HeroSection() {
   return (
-    <section>
+    <section className='py-10'>
     <div className='relative min-h-[450px]'>
 
 
@@ -35,17 +35,15 @@ export default function HeroSection() {
 <div className='text-center'>
 <h1 className='font-py font-semibold lg:text-6xl text-5xl relative pb-4 max-w-[889px] mx-auto lg:leading-[76px]'>Find the Perfect Talent 
 for Your Team! </h1>
-<p className='pb-6 max-w-[636px] mx-auto font-py text-2x  font-normal'>Whether you're seeking the perfect job or the ideal candidate, 
-<strong className='font-semibold text-[#FF6700]'>Careerzai</strong> connects job seekers with top employers and 
-helps businesses find the right talent.</p>
+<p className='pb-6 max-w-[636px] mx-auto font-py text-2xl  font-normal'>Search and connect with skilled professionals who fit your job requirements. 
+Browse through profiles, filter by skills, location, and experience 
+to find the ideal candidate.</p>
 
 <div className="flex lg:flex-row flex-col justify-center gap-4 font-p text-xl font-bold space-x-4">
-            <a className="px-3 py-5 min-w-[250px ]  text-white bg-[#0068FF] rounded-md hover:bg-blue-700">
-            Browse Opportunities
+            <a href='/' className="px-3 py-5 min-w-[250px ]  text-white bg-[#0068FF] rounded-md hover:bg-blue-700">
+            Signup Now
             </a>
-            <a className="px-3 min-w-[250px] py-5 text-[#0068FF] bg-white border-[#0068FF] border rounded-md hover:bg-blue-900">
-            Hire Now
-            </a>
+            
           </div>
 </div>
       </div>

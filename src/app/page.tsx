@@ -7,16 +7,16 @@ import HowItWorks from "./components/HowItWorks";
 import FAQComponent from "./components/FAQComponent";
 import Footer from "./components/Footer";
 import RedirectIfJobSeeker from "./components/RedirectIfJobSeeker";
-
+import CheckToken from "./components/CheckToken";
 export default function Home() {
-const jobSekker=true;
+
 
 
 // RedirectIfJobSeeker(jobSekker)
 	return (
 		<>
-     
-			<Header />
+     <CheckToken/>
+			 <Header />
 			<HeroSection />
 			<SearchJob />
 			<InfoSection />

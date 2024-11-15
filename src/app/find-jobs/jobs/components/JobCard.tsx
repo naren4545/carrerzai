@@ -16,7 +16,8 @@ interface JobCardProps {
     salary: { minSalary: number; maxSalary: number };
     createdAt: string;
     typeOfJob: string;
-  };
+  },
+ 
 }
 
 const JobCard: React.FC<JobCardProps> = ({ job }) => {
@@ -27,7 +28,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
   };
 
   return (
-    <Link href={`/find-jobs/${job._id}`} key={job._id}>
+    <Link href={`/find-jobs/${job.slug}`} key={job._id}>
     <div className="border rounded-lg p-4 shadow-md h-fit bg-white max-w-[905px]">
       <div className="flex justify-between items-center mb-3">
         <div className='flex gap-5'>
@@ -79,8 +80,8 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
       </div>
 
       <div className="mt-3 md:text-xl text-[10px] text-[#FF6700] flex items-center gap-5">
-       <a href='/'  className='flex items-center p-2 rounded-lg border-[#FF6700] border '> <Image src={timeFill} alt="Clock" className="w-4 h-4 mr-2" />
-        {timeSincePosted(job.createdAt)}</a> • <span className="ml-1 md:text-sm text-[10px]">Be an early applicant</span>
+       <button type='button'  className='flex items-center p-2 rounded-lg border-[#FF6700] border '> <Image src={timeFill} alt="Clock" className="w-4 h-4 mr-2" />
+        {timeSincePosted(job.createdAt)}</button> • <span className="ml-1 md:text-sm text-[10px]">Be an early applicant</span>
       </div>
     </div>
     </Link>

@@ -1,12 +1,15 @@
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import WrapperFindTalent from "./component/WrapperFindTalent";
 
-import Header from '../components/Header'
-import HeroSection from './component/HeroSection'
+
 
 export default function page() {
   return (
     <main>
-   <Header/>
-   <HeroSection/>
+         <Header/>
+   <WrapperFindTalent/>
+   <Footer/>
     </main>
   )
 }

@@ -7,6 +7,7 @@ import CompanyInfo from './CompanyInfo'
 import Buttons from './Buttons'
 import BackButon from './BackButon'
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default async function JobRender({ job }: { job: any }) {
 
     

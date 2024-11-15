@@ -1,18 +1,42 @@
 
 import JobList from './JobsSection'
-import { JobsProvider } from './UrlContex';
+
 import HeroSection from './HeroSection'
 import { Suspense } from "react";
-export default function Wrapper() {
+
+
+async function fetchData(searchParams) {
+  // Assuming there's a search param in the URL you want to fetch data based on
+  const location = await searchParams?.location || '';
+  const page = await searchParams?.page || '';
+  const skilltag = await searchParams?.skilltag || '';
+console.log(page+" text")
+  const response = await fetch(`https://www.careerzai.com/v1/job/filtered?location=${location}&page=${page}&skilltag=${skilltag}&limit=2`, {
+    cache: 'no-store',
+  });
+  const data = await response.json();
+
+  return data;
+}
+
+
+
+export default async function Wrapper({searchParams}) {
+  let loading = true;
+
+
+const {jobs,currentPage,totalPages}=await fetchData(searchParams);
+ loading = false;
+
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
-      <JobsProvider>
+    
+     
       <HeroSection/>
-      <JobList/>
+      <JobList jobs={jobs} page={currentPage} totalPages={totalPages } loading={loading}/>
       
-      </JobsProvider>
-      </Suspense>
+      
+      
     </div>
   )
 }

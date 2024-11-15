@@ -72,7 +72,7 @@ const JobsMainContent: React.FC<JobCardProps> = ({ job }) => {
       </div>
 
       <div className="mt-3 md:text-xl text-[10px] text-[#FF6700] flex items-center gap-5">
-       <a href=''  className='flex items-center p-2 rounded-lg border-[#FF6700] border '> <Image src={timeFill} alt="Clock" className="w-4 h-4 mr-2" />
+       <a href='/'  className='flex items-center p-2 rounded-lg border-[#FF6700] border '> <Image src={timeFill} alt="Clock" className="w-4 h-4 mr-2" />
         {timeSincePosted(job.createdAt)}</a> • <span className="ml-1 md:text-sm text-[10px]">Be an early applicant</span>
       </div>
     </div>

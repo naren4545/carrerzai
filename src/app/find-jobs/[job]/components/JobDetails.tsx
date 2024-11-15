@@ -43,7 +43,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({ openings, applicants, about, re
         <h2 className="md:text-[32px] text-xl font-medium mb-2">Key Responsibilities</h2>
         <ul className="list-decimal pl-8  space-y-2 font-normal md:text-2xl text-sm">
           {responsibilities.map((responsibility, index) => (
-            <li className='' key={responsibility}>{responsibility}</li>
+            <li className='' key={ index}>{responsibility}</li>
           ))}
         </ul>
       </section>

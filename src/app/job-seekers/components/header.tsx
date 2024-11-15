@@ -9,6 +9,8 @@ import { usePathname } from "next/navigation";
 import RegisterDropdown from "../../components/RegisterDropdown";
 import Hamburger from "../../components/HamBurger";
 import Dropdown from "../../components/Dropdown"; // Import Dropdown component
+import message from '../../assests/uil_comment-alt-message.svg'
+import bell from '../../assests/clarity_notification-line.svg'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -141,16 +143,16 @@ const Header: React.FC = () => {
           </Link>
         </nav>
 
-        <div className="relative w-full lg:w-fit px-3">
-          <div className="absolute left-4 top-[6px] md:top-[14px] text-gray-400 ">
-            <Image alt="" src={search} />
-          </div>
+        <div className="relative min-w-[160px] justify-between gap-5 flex w-full lg:w-fit px-3">
+         
+<button type="button">
+<Image src={message} alt=""/>
 
-          <input
-            type="text"
-            placeholder="Search for Job, Company or Skill..."
-            className=" pl-[37px] lg:inline-block w-full lg:min-w-[405px] md:h-[50px] h-20px[] px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-none text-[10px] focus:border-blue-500 placeholder:lg:text-base"
-          />
+</button>
+<button type="button">
+
+<Image src={bell} alt=""/>
+</button>
         </div>
       </div>
     </header>
