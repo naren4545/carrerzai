@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 import { Suspense } from "react";
 
 interface PageProps {
-	searchParams: Record<string, string | undefined>;
+	searchParams: any;
   }
   export default async function Page({ searchParams }: PageProps) {
 
