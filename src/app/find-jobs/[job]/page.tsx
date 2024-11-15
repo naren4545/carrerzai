@@ -8,8 +8,9 @@ interface JobPageProps {
   }
   
   const JobPage =async ({ params }: JobPageProps) => {
+    console.log(params)
     const { job } = params;
-    const res=await fetch(`https://www.careerzai.com/v1/job/${job}`)
+    const res=await fetch(`https://www.careerzai.com/v1/job/slug/${job}`)
     const data=await res.json()
     return (
         <>

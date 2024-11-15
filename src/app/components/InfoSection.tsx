@@ -55,8 +55,8 @@ const InfoSection: React.FC = () => {
 
             {/* Buttons */}
             <div className="flex mt-6 gap-5 max-w-[537px] mx-auto">
-              <button className="px-4 md:text-xl text-sm py-4 md:min-w-[184px] min-w-[130px] border-[#0068FF] border  text-[#0068FF] font-semibold rounded-md">Learn More</button>
-              <button className="px-4 md:text-xl text-sm py-4 bg-blue-700 md:min-w-[184px] min-w-[130px] text-white font-semibold rounded-md">Signup</button>
+              <button type='button' className="px-4 md:text-xl text-sm py-4 md:min-w-[184px] min-w-[130px] border-[#0068FF] border  text-[#0068FF] font-semibold rounded-md">Learn More</button>
+              <button type='button' className="px-4 md:text-xl text-sm py-4 bg-blue-700 md:min-w-[184px] min-w-[130px] text-white font-semibold rounded-md">Signup</button>
             </div>
           </div>
 
@@ -102,8 +102,8 @@ const InfoSection: React.FC = () => {
 
             {/* Buttons */}
             <div className="flex mt-6 gap-5 max-w-[537px] mx-auto text-center">
-              <a className="px-4 md:text-xl text-sm py-4 md:min-w-[184px] min-w-[130px] border-[#0068FF] border  text-[#0068FF] font-semibold rounded-md">Learn More</a>
-              <a className="px-4 md:text-xl text-sm py-4 bg-blue-700 md:min-w-[184px] min-w-[130px] text-white font-semibold rounded-md">Signup</a>
+              <a href='/' className="px-4 md:text-xl text-sm py-4 md:min-w-[184px] min-w-[130px] border-[#0068FF] border  text-[#0068FF] font-semibold rounded-md">Learn More</a>
+              <a href='/' className="px-4 md:text-xl text-sm py-4 bg-blue-700 md:min-w-[184px] min-w-[130px] text-white font-semibold rounded-md">Signup</a>
             </div>
           </div>
         </div>

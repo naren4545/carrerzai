@@ -8,6 +8,25 @@ import { usePathname } from "next/navigation";
 import RegisterDropdown from "./RegisterDropdown";
 import Hamburger from "./HamBurger";
 import Dropdown from "./Dropdown"; // Import Dropdown component
+import Profile from "../assests/profile.svg";
+import NotificationMessageComp from "./NotificationMessageComp";
+import { useDualAuth } from "@/context/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import ProfileDropDown from "./ProfileDropDown";
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -19,9 +38,27 @@ import {
 } from "@/components/ui/navigation-menu"
 
 
-const Header: React.FC = () => {
+const Header: React.FC =  () => {
   const pathname = usePathname();
+  const { 
+    isPinqueryLoggedIn, 
+   
+    
+    pinqueryLogout,
+    
+    loading
+  } = useDualAuth();
 
+  // Check if the current pathname is '/find-job/jobs'
+  const isFindJobPage = pathname === '/find-jobs/jobs' || pathname==='/find-jobs/internships';
+const isLogin=  isPinqueryLoggedIn
+console.log("isFindJobPage",isLogin)
+
+
+if( loading){
+
+  return <div/>;
+}
   return (
     <header className="shadow-custom-light  z-50 backdrop-filter backdrop-blur-lg w-full lg:sticky top-0 ">
       {/* Container for max width */}
@@ -40,18 +77,34 @@ const Header: React.FC = () => {
 
           {/* Buttons */}
           <div className="flex flex-col  lg:pt-0  lg:flex-row justify-center gap-4 items-center font-i text-xl font-bold lg:space-x-4">
-            <a href="/" className="px-3 py-2 hidden lg:block  text-white bg-[#0068FF] rounded-md hover:bg-blue-700">
+           {!isLogin?(<> <a href="/" className="px-3 py-2 hidden lg:block  text-white bg-[#0068FF] rounded-md hover:bg-blue-700">
               Job Seeker Login
             </a>
             <a href="/" className="px-3 py-2 hidden lg:block text-white bg-[#0068FF] rounded-md hover:bg-blue-900">
               Recruiter Login
             </a>
-            <RegisterDropdown />
+            <RegisterDropdown /></>):( <>
+            <div className="md:block hidden">
+              <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <div className="cursor-pointer"> <Image src={Profile} alt=""/></div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-[360px] mr-3 rounded-[10px] ">
+      
+        <ProfileDropDown name="Narendra" email="narenchavn26@gmail.com"/>
+      </DropdownMenuContent>
+    </DropdownMenu>
+    </div>
+    <div className="md:hidden block">
+    <NotificationMessageComp/>
+      </div>
+            
+            </>)}
           </div>
         </div>
       </div>
       {/* Navigation and Search */}
-      <div className="flex justify-between py-4  items-center max-w-[1350px] w-full mx-auto pt-3">
+      <div className={`flex justify-between   items-center max-w-[1350px] w-full mx-auto  ${isLogin?"py-0 pt-0 md:py-4 md:pt-3":"py-4"}`}>
         <nav className="hidden lg:flex gap-8 font-i text-2xl">
           <Link
             href="/"
@@ -61,7 +114,7 @@ const Header: React.FC = () => {
           >
             Home
           </Link>
-          <div className="relative group">
+          <div className={`relative group ${isFindJobPage ? "hidden" : ""}`}>
             {/* "Find Jobs" Link with Hover */}
 
 
@@ -100,7 +153,7 @@ const Header: React.FC = () => {
           </div>
           <Link
             href="/find-talent"
-            className={`hover:text-blue-600 ${
+            className={`hover:text-blue-600 ${isFindJobPage || isLogin ? "hidden" : ""} ${
               pathname === "/find-talent"
                 ? "text-blue-600 border-b-2 border-blue-600"
                 : ""
@@ -108,6 +161,29 @@ const Header: React.FC = () => {
           >
             Find Talent
           </Link>
+
+          <Link
+            href="/find-jobs/jobs"
+            className={`hover:text-blue-600 ${isFindJobPage ? "" : "hidden"} ${
+              pathname === "/find-jobs/jobs"
+                ? "text-blue-600 border-b-2 border-blue-600"
+                : ""
+            }`}
+          >
+            Jobs
+          </Link>
+
+          <Link
+            href="/find-jobs/internships"
+            className={`hover:text-blue-600 ${isFindJobPage ? "" : "hidden"} ${
+              pathname === "/find-jobs/internships"
+                ? "text-blue-600 border-b-2 border-blue-600"
+                : ""
+            }`}
+          >
+           Internships
+          </Link>
+
           <Link
             href="/contact"
             className={`hover:text-blue-600 ${
@@ -121,7 +197,7 @@ const Header: React.FC = () => {
         </nav>
 
         <div className="relative w-full lg:w-fit px-3">
-          <div className="absolute left-4 top-[6px] md:top-[14px] text-gray-400 ">
+          {!isLogin?(<><div className="absolute left-4 top-[6px] md:top-[14px] text-gray-400 ">
             <Image alt="" src={search} />
           </div>
 
@@ -129,7 +205,7 @@ const Header: React.FC = () => {
             type="text"
             placeholder="Search for Job, Company or Skill..."
             className=" pl-[37px] lg:inline-block w-full lg:min-w-[405px] md:h-[50px] h-20px[] px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-none text-[10px] focus:border-blue-500 placeholder:lg:text-base"
-          />
+          /></>):(<div className="md:block hidden"><NotificationMessageComp/></div>)}
         </div>
       </div>
     </header>

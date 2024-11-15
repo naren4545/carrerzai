@@ -9,6 +9,16 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		keyframes: {
+			gradientAnimation: {
+			  '0%': { backgroundPosition: '0% 50%' },
+			  '50%': { backgroundPosition: '100% 50%' },
+			  '100%': { backgroundPosition: '0% 50%' },
+			},
+		  },
+		  animation: {
+			gradient: 'gradientAnimation 2s ease-in-out infinite',
+		  },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

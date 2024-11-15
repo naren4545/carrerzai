@@ -25,7 +25,7 @@ export default function ProfileStart() {
           Create your profile now to unlock job opportunities tailored to your skills and preferences.
           Start building your career journey today!
         </p>
-        <button className="bg-[#FFBA00]  text-white text-base font-semibold py-4 px-7 rounded-md shadow-xl text-2xl">
+        <button type='button' className="bg-[#FFBA00]  text-white text-base font-semibold py-4 px-7 rounded-md shadow-xl text-2xl">
           Create Your Profile
         </button>
       </div>
