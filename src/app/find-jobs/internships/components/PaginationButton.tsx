@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from 'next/navigation';
-export default function PaginationButton({children,page,...props}:{children:React.ReactNode,page:number,props:React.ButtonHTMLAttributes<HTMLButtonElement>}) {
+export default function PaginationButton({children, className,page,disabled}:{children:React.ReactNode,page:number, className?:string,disabled:boolean}) {
 
     const router = useRouter();
 
@@ -22,7 +22,7 @@ export default function PaginationButton({children,page,...props}:{children:Reac
 		// Updates the URL without a full page reload
 	};
   return (
-    <button type='button' {...props} onClick={()=>handlePageChange(page)}>
+    <button type='button' disabled={disabled} className={className} onClick={()=>handlePageChange(page)}>
         {children}
       
     </button>

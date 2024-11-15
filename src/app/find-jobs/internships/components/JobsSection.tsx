@@ -135,7 +135,7 @@ you're interested in. "
 							const pageIndex = index + 1;
 							return (
 								<PaginationButton
-								
+								disabled={false}
 									key={pageIndex}
 									page={pageIndex}
 									// onClick={() => handlePageChange(pageIndex)}
