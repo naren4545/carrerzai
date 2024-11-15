@@ -16,6 +16,7 @@ interface JobCardProps {
     salary: { minSalary: number; maxSalary: number };
     createdAt: string;
     typeOfJob: string;
+    slug: string
   },
  
 }
