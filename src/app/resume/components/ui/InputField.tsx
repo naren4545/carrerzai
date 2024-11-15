@@ -12,7 +12,7 @@ interface InputFieldProps {
   placeholder?: string;
   name: string;
   value: string | number;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   options?: Option[];
 }
 
