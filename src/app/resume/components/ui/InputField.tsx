@@ -1,7 +1,30 @@
-// components/InputField.js
-import React from 'react';
+// components/InputField.tsx
+import  type { ChangeEvent } from 'react';
 
-const InputField = ({ label, type = "text", placeholder, name, value, onChange, options }) => {
+interface Option {
+  label: string;
+  value: string | number;
+}
+
+interface InputFieldProps {
+  label: string;
+  type?: "text" | "radio" | "select" | "textarea" | "message" | "password" | "email" | "number";
+  placeholder?: string;
+  name: string;
+  value: string | number;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  options?: Option[];
+}
+
+const InputField: React.FC<InputFieldProps> = ({
+  label,
+  type = "text",
+  placeholder = "",
+  name,
+  value,
+  onChange,
+  options = []
+}) => {
   return (
     <div className="mb-4">
       <label className="block text-gray-700 md:text-xl text-sm mb-2" htmlFor={name}>
@@ -11,7 +34,8 @@ const InputField = ({ label, type = "text", placeholder, name, value, onChange, 
       {type === "radio" ? (
         <div className="flex space-x-4 md:text-xl">
           {options.map((option, index) => (
-            <label key={index} className="inline-flex items-center">
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+<label key={index} className="inline-flex items-center">
               <input
                 type="radio"
                 name={name}
@@ -33,7 +57,8 @@ const InputField = ({ label, type = "text", placeholder, name, value, onChange, 
         >
           <option value="">Select</option>
           {options.map((option, index) => (
-            <option key={index} value={option.value}>{option.label}</option>
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+<option key={index} value={option.value}>{option.label}</option>
           ))}
         </select>
       ) : type === "textarea" ? (
