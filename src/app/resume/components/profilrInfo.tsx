@@ -24,7 +24,7 @@ interface Profile {
   userPhoneNumber: string;
   userGender: string;
   userQualification: string;
-  userDob:string
+ 
 }
 
 interface ProfileCardProps {
@@ -120,7 +120,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
           <Image src={dobIcon} alt="Date of Birth Icon" /> 
           <div>
             <p className="text-[#5E5E5E]">Date of Birth</p>
-            <p>{profileData.userDob}</p>
+            {/* {<p>{profileData.userDob}</p>} */}
           </div>
         </div>
       </div>
