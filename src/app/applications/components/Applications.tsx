@@ -15,11 +15,20 @@ import axios from "axios";
       // Format as "DD - MM - YYYY"
       return `${day} - ${month} - ${year}`;
     };
+
+    type JobApplication = {
+      jobId: {
+        title: string;
+        company: string;
+      };
+      createdAt: string;
+      status: string;
+    };
 const JobApplications = () => {
 
 
 
-    const [JobApplications, setJobApplications] = React.useState([]);
+    const [JobApplications, setJobApplications] =  React.useState<JobApplication[]>([]);
   // Dummy data
   useEffect(() => {
     
