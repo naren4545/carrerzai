@@ -1,5 +1,6 @@
 // JobDetails.tsx
-
+import Cookies from "js-cookie";
+import axios from "axios";
 
 interface JobDetailsProps {
   openings: number;
@@ -25,11 +26,7 @@ async function  handelAppy ()  {
     );
 
 
-    toast({
-      variant: "default",
-      title: "Applied Successfully",
-      description: "Friday, February 10, 2023 at 5:57 PM",
-    });
+   
 
     return response.data;
     
