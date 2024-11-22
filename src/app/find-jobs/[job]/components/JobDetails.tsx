@@ -10,25 +10,25 @@ interface JobDetailsProps {
 }
 
 
-async function  handelAppy ()  {
-  const pinqueryToken = Cookies.get("pinquery_token");
-  console.log(pinqueryToken)
-  try {
-   const response = await axios.post(
-      `https://www.careerzai.com/v1/application/${id}`,
-      {}, // Empty body as no data is required
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${pinqueryToken}`, // Token added to the Authorization header
-        },
-      }
-    );
+// async function  handelAppy ()  {
+//   const pinqueryToken = Cookies.get("pinquery_token");
+//   console.log(pinqueryToken)
+//   try {
+//    const response = await axios.post(
+//       `https://www.careerzai.com/v1/application/${id}`,
+//       {}, // Empty body as no data is required
+//       {
+//         headers: {
+//           'Content-Type': 'application/json',
+//           'Authorization': `Bearer ${pinqueryToken}`, // Token added to the Authorization header
+//         },
+//       }
+//     );
 
 
    
 
-    return response.data;
+//     return response.data;
     
 
 
@@ -51,14 +51,14 @@ async function  handelAppy ()  {
 
 
 
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(`API Error: ${error.response?.data || error.message}`);
-    }
-    throw error;
-  }
+//   } catch (error) {
+//     if (axios.isAxiosError(error)) {
+//       throw new Error(`API Error: ${error.response?.data || error.message}`);
+//     }
+//     throw error;
+//   }
 
-}
+// }
 
 const JobDetails: React.FC<JobDetailsProps> = ({ openings, applicants, about, responsibilities }) => {
   return (
