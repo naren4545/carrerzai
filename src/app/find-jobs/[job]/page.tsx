@@ -2,18 +2,23 @@ import Header from "../../components/Header";
 import JobRender from "./components/jobRender";
 import Footer from "../../components/Footer";
 import ProTipsSection from "@/app/components/ProTips";
-import { cookies } from "next/headers"; // Import cookies helper for server-side
+import { cookies } from "next/headers";
 
 interface JobPageProps {
-  params: any;
+  params: { job: string }; // Explicitly type params
 }
 
 const JobPage = async ({ params }: JobPageProps) => {
-  const { job } =await params;
+  const { job } = params;
 
-  // Get the token from cookies
-  const pinqueryToken = await cookies().get("pinquery_token")?.value;
-console.log(pinqueryToken+"test")
+  // Access the cookies object
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get("pinquery_token"); // Get the cookie object
+
+  const pinqueryToken = cookie?.value; // Safely extract the value if the cookie exists
+
+  console.log(`Token: ${pinqueryToken}`);
+
   // Select the appropriate endpoint based on token presence
   const endpoint = pinqueryToken
     ? `https://www.careerzai.com/v1/job/user/slug/${job}`
