@@ -42,7 +42,7 @@ const JobsMainContent: React.FC<JobCardProps> = ({ job }) => {
           <p className="md:text-2xl text-sm text-gray-500">{job.company}</p>
         </div>
         </div>
-        <WishlistButton id={job._id} Wishlist={job.bookmarked}/>
+        <WishlistButton id={job._id} Wishlist={job.bookmarked ?? false}/>
       </div>
 
       <hr className="my-2" />
