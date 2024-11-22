@@ -1,7 +1,22 @@
 // pages/profile.js
-import React from 'react';
+"use client";
 
-export default function Profile() {
+import axios from 'axios';
+import React, {  useEffect } from 'react';
+import Cookies from "js-cookie";
+
+
+ 
+
+
+
+
+export default  function Profile() {
+  const [JobApplications, setJobApplications] =  React.useState<[]>([]);
+  const pintudeToken = Cookies.get("pintude_token");
+  console.log(pintudeToken +'test');
+ 
+ 
   const jobs = [
     {
       title: 'IT Associate Director',
@@ -16,6 +31,42 @@ export default function Profile() {
       status: 'Closed',
     },
   ];
+ useEffect(() => {
+    
+    
+    const fetchApplication = async () => {
+      try {
+        // Get the token from cookies
+        const pintudeToken = Cookies.get("pintude_token");
+    
+        if (!pintudeToken) {
+          throw new Error("Authentication token is missing.");
+        }
+    
+        // Make the GET request
+        const response = await axios.get("https://www.careerzai.com/v1/job/recruiter/jobs", {
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${pintudeToken}`
+          },
+        });
+    
+        console.log("Application Data:", response.data);
+    
+        setJobApplications(response.data); // Return the data
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error("Error Response:", error.response?.data || error.message);
+          throw new Error(`API Error: ${error.response?.data || error.message}`);
+        }
+      }
+    };
+    fetchApplication()
+    
+  },[])
+
+
+
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
