@@ -1,5 +1,5 @@
 
-
+"use client"
 import JobCard from "../components/JobCard";
 ; // Adjust the path as necessary
 
@@ -18,6 +18,8 @@ interface Job {
 	createdAt: string;
 	typeOfJob: string;
 	slug: string
+	bookmarked?: boolean
+	applied?: boolean
   }
   
   interface JobListProps {
@@ -53,7 +55,7 @@ interface Job {
 	// 		setPage(Number.parseInt(queryPage, 10));
 	// 	}
 	// }, [setPage]);
-
+console.log(jobs)
 	if (!jobs || (!jobs.length && !loading)) {
 		return <p>no data found</p>;
 	}

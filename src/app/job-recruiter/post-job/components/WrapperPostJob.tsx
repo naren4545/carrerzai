@@ -2,8 +2,9 @@ import ApplicationDeadline from "./ApplicationDeadline";
 import { FormProvider } from "./FormContext";
 import JobDetails from "./JobDetails";
 import JobRequirement from "./JobRequirement";
-import JobTiming from "./JobTiming";
+// import JobTiming from "./JobTiming";
 import OpportunityType from "./OpportunityType";
+import PostJobButton from "./PostJobButton";
 import ResponsibilitiesInput from "./ResponsibilitiesInput";
 import SalaryAndPerks from "./SalaryAndPerks";
 import SkillsInput from "./SkillsInput";
@@ -19,8 +20,9 @@ export default function WrapperPostJob(){
           </div>
 
           <FormProvider>
+          <form className="w-full">
 <div className=" shadow-xl   rounded-xl max-w-[1118px] mx-auto">
-  
+ 
             <OpportunityType/>
             <hr className="border-black"/>
             <JobDetails/>
@@ -31,13 +33,17 @@ export default function WrapperPostJob(){
             <hr className="border-black"/>
             <ResponsibilitiesInput/>
             <hr className="border-black"/>
-            <JobTiming/>
-            <hr className="border-black"/>
+            {/* <JobTiming/>
+            <hr className="border-black"/> */}
             <SalaryAndPerks/>
             <hr className="border-black"/>
             <ApplicationDeadline/>
-            </div>
+
             
+            </div>
+
+            <PostJobButton/>
+            </form>
           </FormProvider>
           </div>
     </section>

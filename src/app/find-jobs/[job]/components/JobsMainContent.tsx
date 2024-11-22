@@ -6,6 +6,7 @@ import location from '../../../assests/mdi_location.svg'
 import salary from '../../../assests/₹.svg'
 import exprience from '../../../assests/exprience.svg'
 import timeFill from '../../../assests/mingcute_time-fill.svg'
+import WishlistButton from '../../jobs/components/Wishlist';
 
 interface JobCardProps {
   job: {
@@ -16,6 +17,8 @@ interface JobCardProps {
     salary: { minSalary: number; maxSalary: number };
     createdAt: string;
     typeOfJob: string;
+    bookmarked?: boolean;
+    
   };
 }
 
@@ -39,9 +42,7 @@ const JobsMainContent: React.FC<JobCardProps> = ({ job }) => {
           <p className="md:text-2xl text-sm text-gray-500">{job.company}</p>
         </div>
         </div>
-        <button type='button' className="text-gray-500 hover:text-gray-700">
-          <Image src={save} alt="Bookmark" className="" />
-        </button>
+        <WishlistButton id={job._id} Wishlist={job.bookmarked}/>
       </div>
 
       <hr className="my-2" />

@@ -3,36 +3,25 @@ import { createPortal } from 'react-dom';
 import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { usePathname } from "next/navigation";
-import Profile from "../assests/profile.svg";
-
-import { useDualAuth } from "@/context/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
+
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import ProfileDropDown from "./ProfileDropDown";
+import Profile from "../../assests/profile.svg";
 import Image from 'next/image';
 interface SidebarItemProps {
   label: string;
   linkTo: string;
   onclick: () => void;
-  className?: string;
 }
 interface HamburgerNavProps {
   isOpen: boolean;
   toggleSidebar: () => void;
 }
-const SidebarItem = ({ label, linkTo, onclick, className }: SidebarItemProps) => {
+const SidebarItem = ({ label, linkTo, onclick }: SidebarItemProps) => {
   const pathname = usePathname();
   const isActive = pathname === linkTo;
   const style = isActive ? " bg-gray-200 text-black" : "";
@@ -52,19 +41,7 @@ const SidebarItem = ({ label, linkTo, onclick, className }: SidebarItemProps) =>
 
 const HamburgerNav: React.FC<HamburgerNavProps> = ({ isOpen, toggleSidebar }) => {
   const [portalRoot, setPortalRoot] = useState<Element | null>(null);
-
-  const { 
-    isPinqueryLoggedIn, 
-   
-    
-    pinqueryLogout,
-    
-    loading
-  } = useDualAuth();
-const pathname=usePathname()
-  const isFindJobPage = pathname === '/find-jobs/jobs' || pathname==='/find-jobs/internships';
-
-console.log(isPinqueryLoggedIn)
+console.log(isOpen)
   useEffect(() => {
     // Set the portal root element after mounting
     setPortalRoot(document.getElementById("portal-root"));
@@ -78,31 +55,29 @@ console.log(isPinqueryLoggedIn)
         }`}
       />}
       <aside
-       className={`p-4 aside-nav bg-white hamburger transition-transform duration-300 ease-in-out transform fixed top-0 left-0 w-64 h-full z-10 shadow-lg ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      }`}
-      style={{ overflowY: "auto" }}
+        className={`p-4 aside-nav bg-white hamburger transition-transform duration-300 ease-in-out transform fixed w-64 h-full z-10 md:z-auto top-0 shadow-lg ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
         <div className="relative">
-        <div className="flex justify-between">
-{isPinqueryLoggedIn===true &&
-          <div className="">
-              <DropdownMenu>
+          <div className="flex justify-between">
+
+<div>
+<DropdownMenu >
       <DropdownMenuTrigger asChild>
         <div className="cursor-pointer"> <Image src={Profile} alt=""/></div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[290px] mr-3 rounded-[10px] ">
+      <DropdownMenuContent className="w-[240px] mr-3 rounded-[10px] ">
       
         <ProfileDropDown name="Narendra" email="narenchavn26@gmail.com"/>
       </DropdownMenuContent>
     </DropdownMenu>
-    </div>}
-   
-          
+</div>
+
             <button
             type='button'
               onClick={toggleSidebar}
-              className="text-gray-300 absolute right-5 top-5 hover:text-white focus:outline-none focus:text-white"
+              className="text-gray-300  hover:text-white focus:outline-none focus:text-white"
             >
               {isOpen ? (
                 <FaTimes className="w-6 h-6 text-black absolute top-[-4px]" />
@@ -112,14 +87,10 @@ console.log(isPinqueryLoggedIn)
             </button>
           </div>
           <nav className="pt-5">
-            <SidebarItem onclick={toggleSidebar} label="Home" linkTo="/" />
-            <SidebarItem onclick={toggleSidebar} className={`${isFindJobPage??"hidden"}`} label="Find Jobs" linkTo="/find-jobs" />
-            <SidebarItem onclick={toggleSidebar} className={`${isFindJobPage?"":"hidden"}`} label="Jobs" linkTo="/find-jobs/jobs" />
-            <SidebarItem onclick={toggleSidebar} className={`${isFindJobPage?"":"hidden"}`} label="Internships" linkTo="/find-jobs/internships" />
-
-          
-            <SidebarItem onclick={toggleSidebar} className={`${isPinqueryLoggedIn===true && "hidden"}`} label="Find Talent" linkTo="/find-talent" />
-            <SidebarItem onclick={toggleSidebar} label="Contact" linkTo="/contact" />
+            <SidebarItem onclick={toggleSidebar} label="Home" linkTo="/job-recruiter" />
+            <SidebarItem onclick={toggleSidebar} label="Post Jobs" linkTo="/job-recruiter/post-job" />
+            <SidebarItem onclick={toggleSidebar} label="Search Candidate" linkTo="/job-recruiter/" />
+            <SidebarItem onclick={toggleSidebar} label="Contact" linkTo="/job-recruiter/Contact" />
            
           </nav>
         </div>
