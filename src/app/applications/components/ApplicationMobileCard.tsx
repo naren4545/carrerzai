@@ -21,11 +21,18 @@ const formatDate = (isoDate: string): string => {
     // Format as "DD - MM - YYYY"
     return `${day} - ${month} - ${year}`;
   };
+
+type JobApplication = {
+  jobId: {
+    title: string;
+    company: string;
+  };
+  createdAt: string;
+  status: string;
+};
+
 const ApplicationMobileCard = () => {
-
-
-
-    const [JobApplications, setJobApplications] = React.useState([]);
+  const [JobApplications, setJobApplications] = React.useState<JobApplication[]>([]);
   // Dummy data
   useEffect(() => {
     
