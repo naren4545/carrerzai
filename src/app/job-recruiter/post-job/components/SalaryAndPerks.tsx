@@ -38,23 +38,42 @@ const SalaryAndPerks: React.FC = () => {
 
       <label className="block mb-4">
        
-        <p className='md:text-[32px] text-sm text-[#929292] pb-8'>   Salary (per year):</p>
+        <p className='md:text-[32px] text-sm text-[#929292] py-8'>   Min  Salary:</p>
 
-        <div className="flex items-center">
-          <select
-            name="currency"
-            value={formData.salary.currency}
-            onChange={handleSalaryChange}
-            className="border-2 border-black border-r-0 rounded-l md:h-[80px] h-[50px] px-4 py-2"
-          >
-            <option value="₹">₹</option>
-            <option value="$">$</option>
-            <option value="€">€</option>
-          </select>
+        <div className="flex items-center pb-5">
+        <p
+           
+           className="border-2 border-black flex items-center  border-r-0 rounded-l md:h-[80px] h-[50px] px-6 py-2"
+         >
+          ₹
+           
+         </p>
           <input
             type="text"
-            name="amount"
-            value={formData.salary.amount}
+            name="minSalary"
+            value={formData.salary.minSalary}
+            onChange={handleSalaryChange}
+            placeholder="Enter amount"
+            className="border-2 border-black md:h-[80px] h-[50px] rounded-r px-4 py-2 w-full"
+          />
+        </div>
+
+
+
+        <p className='md:text-[32px] text-sm text-[#929292] py-8'>   max  Salary:</p>
+
+        <div className="flex items-center">
+          <p
+           
+            className="border-2 border-black flex items-center  border-r-0 rounded-l md:h-[80px] h-[50px] px-6 py-2"
+          >
+           ₹
+            
+          </p>
+          <input
+            type="text"
+            name="maxSalary"
+            value={formData.salary.maxSalary}
             onChange={handleSalaryChange}
             placeholder="Enter amount"
             className="border-2 border-black md:h-[80px] h-[50px] rounded-r px-4 py-2 w-full"
@@ -63,7 +82,7 @@ const SalaryAndPerks: React.FC = () => {
       </label>
 
       <label className="block mb-4">
-<p className='md:text-[32px] text-sm text-[#929292] pb-8'>        Perks (Optional):</p>
+<p className='md:text-[32px] text-sm text-[#929292] py-8'>        Perks (Optional):</p>
         <div className="flex items-center border-2 border-black w-full relative">
           <input
             type="text"

@@ -7,7 +7,7 @@ import Profile from "../../assests/profile.svg";
 import search from "../../assests/ic_sharp-search.svg"; // Adjust path as necessary
 import { usePathname } from "next/navigation";
 import RegisterDropdown from "../../components/RegisterDropdown";
-import Hamburger from "../../components/HamBurger";
+import Hamburger from "./HamBurger";
 import Dropdown from "../../components/Dropdown"; // Import Dropdown component
 import message from '../../assests/uil_comment-alt-message.svg'
 import bell from '../../assests/clarity_notification-line.svg'
@@ -67,10 +67,24 @@ const Header: React.FC = () => {
               priority
             />
           </div>
-
+          <div className="relative flex lg:hidden md:max-w-[160px] max-w-[86px]  justify-between gap-5  w-full lg:w-fit px-3">
+         
+         <button type="button">
+         <Image src={message} alt="" className="w-5 md:w-auto"/>
+         
+         </button>
+         <button type="button">
+         
+         <Image src={bell} alt=""className="w-5 md:w-auto"/>
+         </button>
+         </div>
           {/* Buttons */}
-          <div className="flex flex-col  lg:pt-0  lg:flex-row justify-center gap-4 items-center font-i text-xl font-bold lg:space-x-4">
-          <DropdownMenu>
+          <div className=" flex-col lg:flex hidden  lg:pt-0  lg:flex-row justify-center gap-4 items-center font-i text-xl font-bold lg:space-x-4">
+        
+          
+        
+        
+          <DropdownMenu >
       <DropdownMenuTrigger asChild>
         <div className="cursor-pointer"> <Image src={Profile} alt=""/></div>
       </DropdownMenuTrigger>
@@ -83,7 +97,7 @@ const Header: React.FC = () => {
         </div>
       </div>
       {/* Navigation and Search */}
-      <div className="flex justify-between py-4  items-center max-w-[1350px] w-full mx-auto pt-3">
+      <div className="hidden lg:flex  justify-between py-4  items-center max-w-[1350px] w-full mx-auto pt-3">
         <nav className="hidden lg:flex gap-8 font-i text-2xl">
           <Link
             href="/job-recruiter"
@@ -140,11 +154,11 @@ const Header: React.FC = () => {
                 : ""
             }`}
           >
-          Search Candidate
+          Contact
           </Link>
         </nav>
 
-        <div className="relative min-w-[160px] justify-between gap-5 flex w-full lg:w-fit px-3">
+        <div className="relative hidden lg:flex min-w-[160px] justify-between gap-5  w-full lg:w-fit px-3">
          
 <button type="button">
 <Image src={message} alt=""/>

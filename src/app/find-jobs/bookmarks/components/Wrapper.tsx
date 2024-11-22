@@ -1,26 +1,24 @@
 
-import JobList from './JobsSection';
-import HeroSection from './HeroSection';
+import JobList from '../../jobs/components/JobsSection';
+
 import { cookies } from 'next/headers'; // Import cookies helper
 
 async function fetchData(searchParams) {
   // Retrieve the token from cookies
   const pinqueryToken =await cookies().get('pinquery_token')?.value;
-
+console.log(pinqueryToken+"test")
   // Determine the API endpoint based on token presence
-  const endpoint = pinqueryToken
-    ? 'https://www.careerzai.com/v1/job/user/filtered'
-    : 'https://www.careerzai.com/v1/job/filtered';
+  const endpoint = "https://www.careerzai.com/v1/profile/jobs/bookmarks";
 
   // Extract search parameters
-  console.log(pinqueryToken+"test")
+  
   const location = await searchParams?.location || '';
   const page =await searchParams?.page || 1;
   const skilltag =await searchParams?.skilltag || '';
 
   // Perform the fetch request with or without the token
   const response = await fetch(
-    `${endpoint}?location=${location}&page=${page}&skilltag=${skilltag}&limit=10`,
+    `${endpoint}?location=${location}&page=${page}&skilltag=${skilltag}&limit=5`,
     {
       cache: 'no-store',
       headers: {
@@ -40,13 +38,13 @@ async function fetchData(searchParams) {
 
 export default async function Wrapper({ searchParams }) {
   try {
-    const { jobs, currentPage, totalPages } = await fetchData(searchParams);
-   
-console.log(currentPage, totalPages)
+    const { bookmarks, currentPage, totalPages } = await fetchData(searchParams);
+   const data=await fetchData(searchParams);
+console.log(data)
     return (
       <div>
-        <HeroSection />
-        <JobList jobs={jobs} page={currentPage} totalPages={totalPages} loading={false} />
+     
+        <JobList jobs={ bookmarks} page={currentPage} totalPages={totalPages} loading={false} />
       </div>
     );
   } catch (error) {

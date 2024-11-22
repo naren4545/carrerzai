@@ -1,8 +1,10 @@
 "use client"
 import React, { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDualAuth } from "@/context/AuthContext";
+
 export default function CheckToken() {
+  const router = useRouter();
     const searchParams = useSearchParams();
     const { 
         isPinqueryLoggedIn, 
@@ -12,7 +14,7 @@ export default function CheckToken() {
         pinqueryLogout,
         pintudeLogout 
       } = useDualAuth();
-
+      isPintudeLoggedIn && router.push("/job-recruiter");
     useEffect(() => {
         const pinqueryToken = searchParams.get("pinquery_token");
         const pintudeToken = searchParams.get("pintude_token");

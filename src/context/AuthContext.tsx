@@ -86,6 +86,7 @@ export const DualAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         handleInvalidPintudeToken();
       } else {
         setIsPintudeLoggedIn(true);
+        router.push("/job-recruiter");
       }
     } catch (error) {
       console.error('Error in validateAndSetPintudeToken:', error);

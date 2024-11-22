@@ -1,3 +1,4 @@
+"use client"
 import Image from 'next/image';
 
 import companyImg from '../../../assests/companyImgPlaceholder.svg'
@@ -7,6 +8,8 @@ import salary from '../../../assests/₹.svg'
 import exprience from '../../../assests/exprience.svg'
 import timeFill from '../../../assests/mingcute_time-fill.svg'
 import Link from 'next/link';
+import WishlistButton from './Wishlist';
+import JobAppy from './jobAppy';
 interface JobCardProps {
   job: {
     _id:string
@@ -16,7 +19,9 @@ interface JobCardProps {
     salary: { minSalary: number; maxSalary: number };
     createdAt: string;
     typeOfJob: string;
-    slug: string
+    slug: string;
+    bookmark?: boolean;
+    applied?: boolean
   },
  
 }
@@ -27,9 +32,9 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
     const mins = Math.floor(timeDiff / (1000 * 60));
     return `${mins} mins. ago`;
   };
-
+console.log(job);
   return (
-    <Link href={`/find-jobs/${job.slug}`} key={job._id}>
+   
     <div className="border rounded-lg p-4 shadow-md h-fit bg-white max-w-[905px]">
       <div className="flex justify-between items-center mb-3">
         <div className='flex gap-5'>
@@ -41,9 +46,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
           <p className="md:text-2xl text-sm text-gray-500">{job.company}</p>
         </div>
         </div>
-        <button type='button' className="text-gray-500 hover:text-gray-700">
-          <Image src={save} alt="Bookmark" className="" />
-        </button>
+        <WishlistButton id={job._id} Wishlist={job.bookmark}/>
       </div>
 
       <hr className="my-2" />
@@ -71,12 +74,10 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
         </div>
 
         <div className="flex flex-row md:flex-col gap-3 md:text-2xl text-sm">
-          <button type='button' className="text-blue-600 border  border-blue-600 px-7 py-2 rounded md:mb-2">
+          <Link href={`/find-jobs/${job.slug}`}  className="text-blue-600 border  border-blue-600 px-7 py-2 rounded md:mb-2">
             View Details
-          </button>
-          <button type='button' className="bg-blue-600 text-white px-7 py-2 rounded">
-            Apply
-          </button>
+          </Link>
+         <JobAppy id={job._id} applied={job.applied}/>
         </div>
       </div>
 
@@ -85,7 +86,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
         {timeSincePosted(job.createdAt)}</button> • <span className="ml-1 md:text-sm text-[10px]">Be an early applicant</span>
       </div>
     </div>
-    </Link>
+  
   );
 };
 

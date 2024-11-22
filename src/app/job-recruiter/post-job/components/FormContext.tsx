@@ -19,7 +19,11 @@ interface FormData {
   jobDescription: string;
   jobLocation: string;
   jobType: string;
-  experience: string;
+  experience: {
+    minExperience: number;
+    maxExperience: number;
+  };
+  
   employmentType: string;
   ageLimit: string;
   education: string;
@@ -38,7 +42,7 @@ interface FormData {
       endPeriod: string;   // AM or PM
     };
   };
-  salary: { currency: string; amount: string };
+  salary: { minSalary: number, maxSalary: number,  };
   perks: string[];
   applicationDeadline: string;
    // Add responsibilities to FormData
@@ -62,7 +66,10 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     jobDescription: "",
     jobLocation: "",
     jobType: "Remote",
-    experience: "",
+    experience: {
+      minExperience: 0,
+      maxExperience: 0,
+    },
     employmentType: "",
     ageLimit: "",
     education: "",
@@ -73,7 +80,7 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         workingDays: { start: '', end: '' },
         workingHours: { start: '', startPeriod: 'AM', end: '', endPeriod: 'PM' },
       },// Initialize responsibilities array
-      salary: { currency: '₹', amount: '' },
+      salary: { minSalary: 0, maxSalary: 0, },
       perks: [],
       applicationDeadline:""
 

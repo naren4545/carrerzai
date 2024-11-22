@@ -44,9 +44,9 @@ const Header: React.FC =  () => {
     isPinqueryLoggedIn, 
    
     
-    pinqueryLogout,
+   loading
     
-    loading
+    
   } = useDualAuth();
 
   // Check if the current pathname is '/find-job/jobs'

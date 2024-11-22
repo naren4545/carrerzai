@@ -1,3 +1,4 @@
+import Profile from "./JobPosted";
 
 
 export default function WrapperProfile() {
@@ -6,7 +7,7 @@ export default function WrapperProfile() {
 
         <div className="p-3 py-5 max-w-[1340px] mx-auto">
 
-
+<Profile/>
         </div>
       
     </section>
