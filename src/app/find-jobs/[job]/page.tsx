@@ -5,7 +5,7 @@ import ProTipsSection from "@/app/components/ProTips";
 import { cookies } from "next/headers";
 
 interface JobPageProps {
-  params: { job: string }; // Explicitly type params
+  params: { job: any }; // Explicitly type params
 }
 
 const JobPage = async ({ params }: JobPageProps) => {
