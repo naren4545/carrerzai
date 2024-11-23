@@ -49,7 +49,7 @@ console.log(data)
         <JobList jobs={ bookmarks} page={currentPage} totalPages={totalPages} loading={false} />
       </div>
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error:", error.message);
 
     return (
