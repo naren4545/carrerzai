@@ -38,7 +38,7 @@ async function fetchData(searchParams:any) {
   return data;
 }
 
-export default async function Wrapper({ searchParams }) {
+export default async function Wrapper({ searchParams }: any) {
   try {
     const { bookmarks, currentPage, totalPages } = await fetchData(searchParams);
    const data=await fetchData(searchParams);
