@@ -46,7 +46,7 @@ console.log(job);
           <p className="md:text-2xl text-sm text-gray-500">{job.company}</p>
         </div>
         </div>
-        <WishlistButton id={job._id} Wishlist={job.bookmark}/>
+        <WishlistButton id={job._id} Wishlist={job.bookmark ?? false}/>
       </div>
 
       <hr className="my-2" />
@@ -77,7 +77,7 @@ console.log(job);
           <Link href={`/find-jobs/${job.slug}`}  className="text-blue-600 border  border-blue-600 px-7 py-2 rounded md:mb-2">
             View Details
           </Link>
-         <JobAppy id={job._id} applied={job.applied}/>
+         <JobAppy id={job._id} applied={job.applied?? false}/>
         </div>
       </div>
 
