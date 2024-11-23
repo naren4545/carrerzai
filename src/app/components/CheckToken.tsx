@@ -14,7 +14,7 @@ export default function CheckToken() {
         pinqueryLogout,
         pintudeLogout 
       } = useDualAuth();
-      isPintudeLoggedIn && router.push("/job-recruiter");
+    
     useEffect(() => {
         const pinqueryToken = searchParams.get("pinquery_token");
         const pintudeToken = searchParams.get("pintude_token");
@@ -43,8 +43,11 @@ export default function CheckToken() {
             newSearchParams.toString() ? `?${newSearchParams.toString()}` : ''
           }`;
           window.history.replaceState(null, "", newUrl);
+          console.log("hii pintude")
+          window.location.href = `${window.location.origin}/job-recruiter`;
+         
         }
       }, [searchParams, pinqueryLogin, pintudeLogin]);
-  
+      
       return<></>
 }
