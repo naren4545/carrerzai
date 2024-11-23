@@ -3,10 +3,12 @@ import JobList from '../../jobs/components/JobsSection';
 
 import { cookies } from 'next/headers'; // Import cookies helper
 
-async function fetchData(searchParams) {
+async function fetchData(searchParams:any) {
   // Retrieve the token from cookies
-  const pinqueryToken =await cookies().get('pinquery_token')?.value;
-console.log(pinqueryToken+"test")
+  const cookieStore = await cookies(); // No need to use await, it's synchronous
+  const cookie = cookieStore.get("pinquery_token"); // Get the cookie object
+
+  const pinqueryToken = cookie?.value;
   // Determine the API endpoint based on token presence
   const endpoint = "https://www.careerzai.com/v1/profile/jobs/bookmarks";
 
