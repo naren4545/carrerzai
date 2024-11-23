@@ -5,14 +5,14 @@ import ProTipsSection from "@/app/components/ProTips";
 import { cookies } from "next/headers";
 
 interface JobPageProps {
-  params: { job: any }; // Explicitly type params
+  params: { job: string }; // Explicitly type 'job' as a string
 }
 
 const JobPage = async ({ params }: JobPageProps) => {
   const { job } = params;
 
   // Access the cookies object
-  const cookieStore = await cookies();
+  const cookieStore = await cookies(); // No need to use await, it's synchronous
   const cookie = cookieStore.get("pinquery_token"); // Get the cookie object
 
   const pinqueryToken = cookie?.value; // Safely extract the value if the cookie exists
