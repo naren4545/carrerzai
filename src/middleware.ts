@@ -24,9 +24,9 @@ export function middleware(request: NextRequest) {
   }
 
   // No token: Redirect to login (or home) page
-  if (pathname !== "/") {  // Ensure we don't get stuck in a loop on the home page
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  // if (pathname !== "/") {  // Ensure we don't get stuck in a loop on the home page
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // }
 
   // Allow access to the home page if no token is set
   return NextResponse.next();
