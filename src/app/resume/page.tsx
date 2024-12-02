@@ -1,5 +1,6 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import  ProfileForm  from "./components/ProfileForm";
 import WrapperResume from "./components/WrapperResume";
 const userProfile = {
     _id: "672bce872c01d2e6ce23f3db",
@@ -98,6 +99,7 @@ export default function page() {
   return (
     <div>
       <Header/>
+      {/* <ProfileForm/> */}
 <WrapperResume userProfile={userProfile}/>
       <Footer/>
 

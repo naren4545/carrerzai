@@ -56,7 +56,7 @@ const ApplicationMobileCard = () => {
     
         console.log("Application Data:", response.data);
     
-        setJobApplications(response.data); // Return the data
+        setJobApplications(response.data.applications); // Return the data
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.error("Error Response:", error.response?.data || error.message);
@@ -70,20 +70,6 @@ const ApplicationMobileCard = () => {
 
 
 
-  const applications = [
-    {
-      jobTitle: "IT Associate Director",
-      company: "ABC Corporation",
-      appliedDate: "30 - 11 - 2024",
-      status: "In Review",
-    },
-    {
-      jobTitle: "IT Associate Director",
-      company: "ABC Corporation",
-      appliedDate: "30 - 11 - 2024",
-      status: "In Review",
-    },
-  ];
 
   return (
     <div className="max-w-[1356px] mx-auto py-10 p-4  block md:hidden">

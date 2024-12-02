@@ -14,14 +14,17 @@ const formatDate = (isoDate: string): string => {
 };
 
 type JobApplication = {
-  
-  title: string;
-  company: string;
-  numberOfApplicants: number;
-  _id: number;
+    _id: number;
+  jobId: {
+    title: string;
+    company: string;
+  };
   createdAt: string;
   status: string;
-  
+  resumeId: {
+    userFirstName: string;
+    userLastName: string;
+  };
 };
 
 
@@ -38,7 +41,7 @@ const ApplicationMobileCard = () => {
           return;
         }
 
-        const response = await axios.get("https://www.careerzai.com/v1/job/recruiter/jobs", {
+        const response = await axios.get("https://www.careerzai.com/v1/application/job/6736096d4cb2f7eaea8ec29a", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${pintudeToken}`,
@@ -46,7 +49,7 @@ const ApplicationMobileCard = () => {
         });
 
         console.log("Application Data:", response.data);
-        setJobApplications(response.data.jobs || []);
+        setJobApplications(response.data || []);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.error("Error Response:", error.response?.data || error.message);
@@ -58,19 +61,22 @@ const ApplicationMobileCard = () => {
 
     fetchApplication();
   }, []);
-
+console.log("hii")
   return (
-    <div className="max-w-[1356px] mx-auto   block md:hidden">
+    <div className="max-w-[1356px] mx-auto block md:hidden ">
       
       <div className="shadow-xl py-3">
-        {JobApplications.map((app, index) => (
+        {JobApplications.map((app) => (
           <div
             key={app._id}
             className="grid grid-cols-5 my-8 mx-4 gap-5 md:text-2xl text-[#FF6700] py-8 px-4 items-center border-b border-gray-300 bg-[#FFEADC] hover:bg-orange-100"
           >
             <div className="col-span-3">
-              <div className="font-medium text-sm">{app.title}</div>
-              <div className="font-medium text-[10px]">No. of Applicants:{app.numberOfApplicants}</div>
+              <div className="font-medium text-sm">{app.resumeId?.userFirstName} {app.resumeId?.userLastName}</div>
+              <div className="font-medium text-[10px]">View Application: </div>
+              <div className="col-span-3  text-[10px]">
+            Applied Date: <span className="font-medium">{formatDate(app.createdAt)}</span>
+            </div>
             </div>
             <div className="col-span-2">
               <div className="text-right">
@@ -84,9 +90,7 @@ const ApplicationMobileCard = () => {
               </div>
             </div>
             
-            <div className="col-span-3  text-[10px]">
-            Change Status: <span className="font-medium">{app.status==="Published"?"Active":"Closed"}</span>
-            </div>
+           
 
             <div className="col-span-2"/>
           </div>
