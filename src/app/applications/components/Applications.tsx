@@ -52,7 +52,7 @@ const JobApplications = () => {
     
         console.log("Application Data:", response.data);
     
-        setJobApplications(response.data); // Return the data
+        setJobApplications(response.data.applications ); // Return the data
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.error("Error Response:", error.response?.data || error.message);

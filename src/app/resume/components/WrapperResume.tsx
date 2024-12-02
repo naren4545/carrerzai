@@ -6,6 +6,7 @@ import JobProfileTitle from './JobProfileTitle';
 import Languages from './language';
 import ProfileCard from './profilrInfo';
 import ProjectsSection from './ProjextSection';
+import ResumeButtons from './ResumeButtons';
 import Skills from './Skills';
 import SocialLinksSection from './SocialLinksSection';
 import WorkExperienceSection from './WorkExperienceSection';
@@ -124,6 +125,7 @@ const WrapperResume: React.FC<WrapperResumeProps> = ({ userProfile }) => {
         
         </div>
       </div>
+      <ResumeButtons/>
     </div>
   );
 };

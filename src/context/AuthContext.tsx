@@ -3,7 +3,7 @@
 import  { createContext, useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
 interface DualAuthContextType {
@@ -23,6 +23,7 @@ export const DualAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isPintudeLoggedIn, setIsPintudeLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true); // New loading state
   const router = useRouter();
+  const pathname=usePathname()
 
   useEffect(() => {
     const pinqueryToken = Cookies.get("pinquery_token");
@@ -85,8 +86,18 @@ export const DualAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.log('Pintude token has expired');
         handleInvalidPintudeToken();
       } else {
-        setIsPintudeLoggedIn(true);
-        router.push("/job-recruiter");
+        console.log('Pintude token is valid');
+        setIsPintudeLoggedIn(()=>{
+          
+          return true
+        });
+        setTimeout(() => {
+          if(!pathname.includes("/job-recruiter")){
+
+            router.push('/job-recruiter');
+          }
+          
+        }, 100); 
       }
     } catch (error) {
       console.error('Error in validateAndSetPintudeToken:', error);

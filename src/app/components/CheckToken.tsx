@@ -44,7 +44,7 @@ export default function CheckToken() {
           }`;
           window.history.replaceState(null, "", newUrl);
           console.log("hii pintude")
-          window.location.href = `${window.location.origin}/job-recruiter`;
+         
          
         }
       }, [searchParams, pinqueryLogin, pintudeLogin]);

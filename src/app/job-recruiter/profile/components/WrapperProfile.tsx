@@ -1,6 +1,7 @@
-import ApplicationMobileCard from "./ApplicationMobileCard";
+
 import Profile from "./Profilenav";
 import Application from "./Application";
+import ApplicationMobileCard from "./ApplicationMobileCard";
 
 export default function WrapperProfile() {
   return (

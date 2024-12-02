@@ -5,6 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import img from "@/app/assests/carbon_data-view-alt.svg";
+import StatusDropdown from "./StatusDropdown";
 
 type JobApplication = {
     _id: number;
@@ -77,9 +78,9 @@ const Wrapper: React.FC = () => {
   return (
     <div className="max-w-[1118px] mx-auto py-10 p-4 md:block hidden">
       {/* Grid Header */}
-      <div className="shadow-xl py-3 border-[#FF6700] border-2 rounded-xl">
-        <div className="grid py-10 grid-cols-4 place-items-center lg:text-[32px] lg:leading-10 text-xl text-left font-semibold px-4 border-b border-[#FF6700]">
-          <div>Applicant's Name</div>
+      <div className="shadow-xl py-3 border-black border-2 rounded-xl">
+        <div className="grid py-10 grid-cols-4 place-items-center lg:text-2xl lg:leading-10 text-xl text-left font-semibold px-4 border-b border-black">
+          <div className="col-span-1">Applicant's Name</div>
           <div>View Profile</div>
           <div>Applied Date</div>
           <div>Change Status</div>
@@ -90,7 +91,7 @@ const Wrapper: React.FC = () => {
           <div
           
             key={app._id}
-            className="grid grid-cols-4 my-8 mx-4 text-base place-items-center lg:text-2xl text-[#FF6700] py-8 px-4 items-center border-b border-gray-300 bg-[#FFEADC] hover:bg-orange-100"
+            className="grid grid-cols-4 my-8  text-base place-items-center lg:text-2xl text-[#FF6700] py-8 px-4 items-center  bg-[#FFEADC] hover:bg-orange-100"
           >
             <div>
               {app.resumeId?.userFirstName} {app.resumeId?.userLastName}
@@ -99,7 +100,7 @@ const Wrapper: React.FC = () => {
               <Image src={img} alt="View Profile" width={24} height={24} />
             </div>
             <div>{formatDate(app.createdAt)}</div>
-            <div>{app.status}</div>
+            <div> <StatusDropdown initialStatus={app.status} itemId={app._id}/></div>
           </div>
         ))}
       </div>
