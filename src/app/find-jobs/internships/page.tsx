@@ -10,7 +10,7 @@ import { Suspense } from "react";
 interface PageProps {
 	searchParams: any;
   }
-  export default async function Page({ searchParams }: PageProps) {
+  export default async function Page() {
 
   
 
@@ -19,8 +19,8 @@ interface PageProps {
 		<div>
 			
 			<Header />
-      <Suspense fallback={<LoadingJob/>}>
-			<Wrapper searchParams={searchParams}/>
+			<Suspense fallback={<LoadingJob />}>
+			<Wrapper />
 			</Suspense>
       <Footer />
 		</div>

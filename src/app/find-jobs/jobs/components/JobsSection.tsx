@@ -2,12 +2,13 @@
 "use client"
 import JobCard from "../components/JobCard";
 ; // Adjust the path as necessary
-
+import { useTransition } from 'react';
 import AccessCard from "./AccessCard";
 import login from "../../../assests/login.png";
 import learnMore from "../../../assests/learnMore.png";
 import folow from "../../../assests/followNow.png";
 import PaginationButton from "./PaginationButton";
+import SkeletonJobCard from "./SkeletonJobCard";
 
 interface Job {
 	_id: string;
@@ -31,7 +32,7 @@ interface Job {
   
   const JobList: React.FC<JobListProps> = ({ jobs, page, totalPages, loading }) => {
 	
-
+	const [isPending, startTransition] = useTransition();
 	// const handlePageChange = (newPage: number) => {
 	// 	// setPage(newPage);
 
@@ -62,10 +63,12 @@ console.log(jobs)
 	return (
 		<div className="p-4 max-w-[1400px] mx-auto">
 			{loading ? (
-				<div className="flex justify-center items-center h-64">
-					<div className="loader">Loading...</div>
-				</div>
-			) : (
+            // Render skeleton cards when loading
+            Array.from({ length: 5 }).map((_, index) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+<SkeletonJobCard key={index} />
+            ))
+          ) : (
 				<>
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-3">
 						<div className="col-span-2 place-content-start grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-1">

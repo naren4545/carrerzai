@@ -18,7 +18,7 @@ export default function PaginationButton({children, className,page,disabled}:{ch
 
 		// Update the route with the new URL
 	router.push(newUrl);
-	window.location.href = newUrl;
+
 		// Updates the URL without a full page reload
 	};
   return (
