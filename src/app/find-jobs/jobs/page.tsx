@@ -5,9 +5,7 @@ import LoadingJob from "./components/LoadingJob";
 import { NextResponse } from "next/server";
 import { Suspense } from "react";
 
-interface PageProps {
-	searchParams: any;
-}
+
 export default async function Page() {
 	return (
 		<div>
