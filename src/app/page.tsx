@@ -8,6 +8,8 @@ import FAQComponent from "./components/FAQComponent";
 import Footer from "./components/Footer";
 import RedirectIfJobSeeker from "./components/RedirectIfJobSeeker";
 import CheckToken from "./components/CheckToken";
+import { Suspense } from "react";
+
 export default function Home() {
 
 
@@ -15,6 +17,7 @@ export default function Home() {
 // RedirectIfJobSeeker(jobSekker)
 	return (
 		<>
+		<Suspense fallback={<div>Loading...</div>}>	
      <CheckToken/>
 			 <Header />
 			<HeroSection />
@@ -23,6 +26,7 @@ export default function Home() {
 			<HowItWorks />
 			<FAQComponent />
 			<Footer />
+			</Suspense>
 		</>
 	);
 }

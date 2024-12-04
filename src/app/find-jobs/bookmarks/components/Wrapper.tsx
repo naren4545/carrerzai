@@ -1,17 +1,17 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import JobList from '../../jobs/components/JobsSection';
 import HeroSection from '../../jobs/components/HeroSection';
 
-const fetchData = async (searchParamsString: string) => {
+const fetchData = async () => {
   try {
     const pinqueryToken = document.cookie.split('; ').find(row => row.startsWith('pinquery_token='))?.split('=')[1];
     const endpoint = "https://www.careerzai.com/v1/profile/jobs/bookmarks";
 
     const response = await fetch(
-      `${endpoint}?${searchParamsString}`,
+      `${endpoint}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -39,20 +39,14 @@ export default function Wrapper() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const searchParams = useSearchParams();
-
-  const searchParamsString = useMemo(() => {
-    const params = new URLSearchParams(searchParams);
-    if (!params.has('page')) params.set('page', '1');
-    if (!params.has('limit')) params.set('limit', '10');
-    return params.toString();
-  }, [searchParams]);
+  
+  
 
   const fetchJobData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchData(searchParamsString);
+      const data = await fetchData();
       setJobData(data);
     } catch (error) {
       console.error("Error:", error);
@@ -60,7 +54,7 @@ export default function Wrapper() {
     } finally {
       setLoading(false);
     }
-  }, [searchParamsString]);
+  }, []);
 
   useEffect(() => {
     fetchJobData();
@@ -77,12 +71,14 @@ export default function Wrapper() {
   return (
     <div>
       <HeroSection />
+      
       <JobList 
         jobs={jobData.jobs} 
         page={jobData.currentPage} 
         totalPages={jobData.totalPages} 
         loading={loading} 
       />
+    
     </div>
   );
 }

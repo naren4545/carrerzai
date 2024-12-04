@@ -59,6 +59,7 @@ interface Job {
 		return <p>no data found</p>;
 	}
 	return (
+		
 		<div className="p-4 max-w-[1400px] mx-auto">
 			
 			{loading ? (
