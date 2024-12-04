@@ -8,6 +8,7 @@ import login from "../../../assests/login.png";
 import learnMore from "../../../assests/learnMore.png";
 import folow from "../../../assests/followNow.png";
 import PaginationButton from "./PaginationButton";
+import SkeletonJobCard from "../../jobs/components/SkeletonJobCard";
 
 interface Job {
 	_id: string;
@@ -59,11 +60,14 @@ interface Job {
 	}
 	return (
 		<div className="p-4 max-w-[1400px] mx-auto">
+			
 			{loading ? (
-				<div className="flex justify-center items-center h-64">
-					<div className="loader">Loading...</div>
-				</div>
-			) : (
+            // Render skeleton cards when loading
+            Array.from({ length: 5 }).map((_, index) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+<SkeletonJobCard key={index} />
+            ))
+          ) : (
 				<>
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-3">
 						<div className="col-span-2 place-content-start grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-1">
