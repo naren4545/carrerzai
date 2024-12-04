@@ -1,3 +1,5 @@
+
+"use client";
 import Header from "../../../app/components/Header";
 import Wrapper from "./components/Wrapper";
 import Footer from "../../../app/components/Footer";
@@ -6,7 +8,7 @@ import { NextResponse } from "next/server";
 import { Suspense } from "react";
 
 
-export default async function Page() {
+export default  function Page() {
 	return (
 		<div>
 			<Header />
