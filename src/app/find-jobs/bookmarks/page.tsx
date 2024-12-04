@@ -8,12 +8,12 @@ import { Suspense } from "react";
 interface PageProps {
 	searchParams: any;
 }
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page() {
 	return (
 		<div>
 			<Header />
 			<Suspense fallback={<LoadingJob />}>
-				<Wrapper searchParams={searchParams} />
+				<Wrapper />
 			</Suspense>
 			<Footer />
 		</div>
