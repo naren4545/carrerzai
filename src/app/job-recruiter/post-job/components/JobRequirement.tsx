@@ -116,23 +116,23 @@ const JobRequirement: React.FC = () => {
             <input
               type="radio"
               name="employmentType"
-              value="Full-Time"
-              checked={formData.employmentType === 'Full-Time'}
+              value="Full Time"
+              checked={formData.employmentType === 'Full Time'}
               onChange={handleChange}
               className="mr-2 md:w-[30px] md:h-[30px] w-5 h-5"
             />
-            Full-Time
+            Full Time
           </label>
           <label className='flex items-center md:text-2xl text-sm font-medium'>
             <input
               type="radio"
               name="employmentType"
-              value="Part-Time"
-              checked={formData.employmentType === 'Part-Time'}
+              value="Part Time"
+              checked={formData.employmentType === 'Part Time'}
               onChange={handleChange}
               className="mr-2 md:w-[30px] md:h-[30px] w-5 h-5"
             />
-            Part-Time
+            Part Time
           </label>
           <label className='flex items-center md:text-2xl text-sm font-medium'>
             <input
@@ -144,6 +144,19 @@ const JobRequirement: React.FC = () => {
               className="mr-2 md:w-[30px] md:h-[30px] w-5 h-5"
             />
             Contract
+          </label>
+
+
+          <label className='flex items-center md:text-2xl text-sm font-medium'>
+            <input
+              type="radio"
+              name="employmentType"
+              value="Internship"
+              checked={formData.employmentType === 'Internship'}
+              onChange={handleChange}
+              className="mr-2 md:w-[30px] md:h-[30px] w-5 h-5"
+            />
+           Internship
           </label>
         </div>
       </div>

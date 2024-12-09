@@ -1,91 +1,42 @@
-'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useSearchParams } from 'next/navigation';
-import JobList from './JobsSection';
-import HeroSection from './HeroSection';
+import JobList from './JobsSection'
 
-const fetchData = async (searchParamsString: string) => {
-  try {
-    const pinqueryToken = document.cookie.split('; ').find(row => row.startsWith('pinquery_token='))?.split('=')[1];
-    const endpoint = pinqueryToken
-      ? 'https://www.careerzai.com/v1/job/user/filtered'
-      : 'https://www.careerzai.com/v1/job/filtered';
+import HeroSection from './HeroSection'
+import { Suspense } from "react";
 
-    const response = await fetch(
-      `${endpoint}?${searchParamsString}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(pinqueryToken && { Authorization: `Bearer ${pinqueryToken}` }),
-        },
-      }
-    );
 
-    if (!response.ok) {
-      throw new Error(`Error fetching data: ${response.statusText}`);
-    }
+async function fetchData(searchParams: any) {
+  // Assuming there's a search param in the URL you want to fetch data based on
+  const location = await searchParams?.location || '';
+  const page = await searchParams?.page || '';
+  const skilltag = await searchParams?.skilltag || '';
 
-    return response.json();
-  } catch (error) {
-    console.error('Error in fetchData:', error);
-    throw error;
-  }
-};
-
-export default function Wrapper() {
-  const [jobData, setJobData] = useState<{ jobs: any[]; currentPage: number; totalPages: number }>({ 
-    jobs: [], 
-    currentPage: 1, 
-    totalPages: 1 
+  const response = await fetch(`https://www.careerzai.com/v1/job/filtered?typeOfJob=Internship&location=${location}&page=${page}&skilltag=${skilltag}&limit=10`, {
+    cache: 'no-store',
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const searchParams = useSearchParams();
+  const data = await response.json();
 
-  const searchParamsString = useMemo(() => {
-    const params = new URLSearchParams(searchParams);
-    if (!params.has('page')) params.set('page', '1');
-    if (!params.has('limit')) params.set('limit', '10');
-    return params.toString();
-  }, [searchParams]);
+  return data;
+}
 
-  const fetchJobData = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await fetchData(searchParamsString);
-      setJobData(data);
-    } catch (error) {
-      console.error("Error:", error);
-      setError(error instanceof Error ? error.message : 'An unknown error occurred');
-    } finally {
-      setLoading(false);
-    }
-  }, [searchParamsString]);
 
-  useEffect(() => {
-    fetchJobData();
-  }, [fetchJobData]);
 
-  if (error) {
-    return (
-      <div className="p-4 text-red-600">
-        <p>Error fetching jobs data: {error}</p>
-      </div>
-    );
-  }
+export default async function Wrapper({searchParams}:{searchParams:any}) {
+  let loading = true;
+
+
+const {jobs,currentPage,totalPages}=await fetchData(searchParams);
+ loading = false;
 
   return (
     <div>
-      <HeroSection />
-      <JobList 
-        jobs={jobData.jobs} 
-        page={jobData.currentPage} 
-        totalPages={jobData.totalPages} 
-        loading={loading} 
-      />
+    
+     
+      
+      <JobList jobs={jobs} page={currentPage} totalPages={totalPages } loading={loading}/>
+      
+      
+      
     </div>
-  );
+  )
 }
-

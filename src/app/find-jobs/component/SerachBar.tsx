@@ -50,6 +50,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ jobs }) => {
 
       {/* Browse Jobs Button */}
       <button
+      type='button'
         onClick={handleSearch}
         className="bg-blue-500 md:inline-block py-5 hidden h-full lg:w-[20%] w-full text-white text-xl font-semibold px-3"
       >
@@ -58,6 +59,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ jobs }) => {
     </div>
     <div className='pt-7 text-center'>
     <button
+    type='button'
         onClick={handleSearch}
         className="bg-blue-500 md:hidden inline-block py-3  h-full lg:w-[20%] md:w-full w-fit rounded-lg text-white text-sm font-semibold px-3"
       >

@@ -3,12 +3,13 @@
 import { useFormContext } from './FormContext';
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useToast } from '@/hooks/use-toast';
 
 export default function PostJobButton() {
   const { formData } = useFormContext();
   const pintudeToken = Cookies.get("pintude_token");
   console.log(pintudeToken || '');
-
+  const { toast } = useToast()
   // Transform formData to match the API's required format
   const transformFormData = () => {
     return {
@@ -18,7 +19,7 @@ export default function PostJobButton() {
       location: formData.jobLocation,
       JobType: formData.jobType,
       perks: formData.perks,
-      typeOfJob: formData.opportunityType,
+      typeOfJob: formData.employmentType,
       salary: {
         minSalary: Number(formData.salary.minSalary),
         maxSalary:Number(formData.salary.maxSalary) , // Adjust if you have min/max input
@@ -51,7 +52,19 @@ console.log(transformFormData())
         }
       );
 
+
+      toast({
+        variant: "default",
+        title: "Job Posted Successfully",
+        description: "Your job has been posted successfully.",
+       
+      });
+
+
       return response.data;
+
+
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(`API Error: ${error.response?.data || error.message}`);

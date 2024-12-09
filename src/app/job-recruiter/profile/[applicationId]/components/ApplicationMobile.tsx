@@ -28,7 +28,7 @@ type JobApplication = {
 };
 
 
-const ApplicationMobileCard = () => {
+const ApplicationMobileCard = ({id}: {id: string}) => {
   const [JobApplications, setJobApplications] = useState<JobApplication[]>([]);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const ApplicationMobileCard = () => {
           return;
         }
 
-        const response = await axios.get("https://www.careerzai.com/v1/application/job/6736096d4cb2f7eaea8ec29a", {
+        const response = await axios.get(`https://www.careerzai.com/v1/application/job/${id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${pintudeToken}`,
@@ -60,7 +60,7 @@ const ApplicationMobileCard = () => {
     };
 
     fetchApplication();
-  }, []);
+  }, [id]);
 console.log("hii")
   return (
     <div className="max-w-[1356px] mx-auto block md:hidden ">
