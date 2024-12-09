@@ -2,12 +2,27 @@
 import axios from "axios";
 import { useState } from "react";
 import Cookies from "js-cookie";
-
+import { useToast } from "@/hooks/use-toast"
 const WishlistButton = ({ id, Wishlist }: { id: string; Wishlist: boolean }) => {
-  const [isWishlisted, setIsWishlisted] = useState(Wishlist); // Initialize with the prop value
+  const [isWishlisted, setIsWishlisted] = useState(Wishlist); 
+  const { toast } = useToast()
+  // Initialize with the prop value
   const pinqueryToken = Cookies.get("pinquery_token");
 console.log(id)
   const handleWishlistToggle = async () => {
+
+
+    if(!pinqueryToken){ 
+      
+      toast({
+        variant: "destructive",
+        title: "Login Required",
+        description: "please login to bookmark jobs",
+      });
+      
+      return
+
+    }
     try {
       if (isWishlisted) {
         await deleteJob(); // Call DELETE if currently wishlisted

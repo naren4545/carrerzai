@@ -6,19 +6,21 @@ import Footer from "../../../app/components/Footer";
 import LoadingJob from "./components/LoadingJob";
 
 import { Suspense } from "react";
+import HeroSection from "./components/HeroSection";
 
 
-  export default  function Page() {
+  export default  function Page({ searchParams }: { searchParams: any }) {
 
   
 
 
   return (
-		<div>
+		<div key={Math.random()}>
 			
 			<Header />
+			<HeroSection/>
 			<Suspense fallback={<LoadingJob />}>
-			<Wrapper />
+			<Wrapper searchParams={searchParams}/>
 			</Suspense>
       <Footer />
 		</div>

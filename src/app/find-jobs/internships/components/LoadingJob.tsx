@@ -8,7 +8,7 @@ export default function LoadingJob() {
   return (
     <>
    
-    <div className='py-10'>
+    <div className='py-10 max-w-[1400px] mx-auto'>
    { Array.from({ length: 5 }).map((_, index) => (
       // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 <SkeletonJobCard key={index} />

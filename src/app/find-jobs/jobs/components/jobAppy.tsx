@@ -13,6 +13,17 @@ const [appliedJob,setAppliedJob]=useState(applied)
     async function  handelAppy ()  {
       const pinqueryToken = Cookies.get("pinquery_token");
       console.log(pinqueryToken)
+
+      if(!pinqueryToken){ 
+      
+        toast({
+          variant: "destructive",
+          title: "Login Required",
+          description: "please login to apply jobs",
+        });
+        return
+      }
+
       try {
        const response = await axios.post(
           `https://www.careerzai.com/v1/application/${id}`,
@@ -56,10 +67,11 @@ const [appliedJob,setAppliedJob]=useState(applied)
   
   
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          throw new Error(`API Error: ${error.response?.data || error.message}`);
-        }
-        throw error;
+        toast({
+          variant: "default",
+          title: "Appliy job failed",
+          description: "please try again",
+        });
       }
   
     }

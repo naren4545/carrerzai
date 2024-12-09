@@ -1,6 +1,6 @@
 
 
-import JobCard from "../components/JobCard";
+import JobCard from "../../jobs/components/JobCard";
 ; // Adjust the path as necessary
 
 import AccessCard from "./AccessCard";

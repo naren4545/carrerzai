@@ -1,26 +1,26 @@
 
-import JobList from '../../jobs/components/JobsSection';
+import JobList from './JobsSection';
 
 import { cookies } from 'next/headers'; // Import cookies helper
 
-async function fetchData(searchParams:any) {
+async function fetchData(searchParams) {
   // Retrieve the token from cookies
-  const cookieStore = await cookies(); // No need to use await, it's synchronous
-  const cookie = cookieStore.get("pinquery_token"); // Get the cookie object
+  const pinqueryToken =await cookies().get('pinquery_token')?.value;
 
-  const pinqueryToken = cookie?.value;
   // Determine the API endpoint based on token presence
-  const endpoint = "https://www.careerzai.com/v1/profile/jobs/bookmarks";
+  const endpoint = pinqueryToken
+    ? 'https://www.careerzai.com/v1/job/filtered'
+    : 'https://www.careerzai.com/v1/job/filtered';
 
   // Extract search parameters
-  
+  console.log(pinqueryToken+"test")
   const location = await searchParams?.location || '';
   const page =await searchParams?.page || 1;
   const skilltag =await searchParams?.skilltag || '';
-
+const industry =await searchParams?.industry || '';
   // Perform the fetch request with or without the token
   const response = await fetch(
-    `${endpoint}?location=${location}&page=${page}&skilltag=${skilltag}&limit=5`,
+    `${endpoint}?location=${location}&page=${page}&skilltag=${skilltag}&industry=${industry}&limit=10`,
     {
       cache: 'no-store',
       headers: {
@@ -35,21 +35,22 @@ async function fetchData(searchParams:any) {
   }
 
   const data = await response.json();
+  console.log(data,"hii")
   return data;
 }
 
-export default async function Wrapper({ searchParams }: any) {
+export default async function Wrapper({ searchParams }) {
   try {
-    const { bookmarks, currentPage, totalPages } = await fetchData(searchParams);
-   const data=await fetchData(searchParams);
-console.log(data)
+    const { jobs, currentPage, totalPages } = await fetchData(searchParams);
+   
+console.log(currentPage, totalPages)
     return (
-      <div>
-     
-        <JobList jobs={ bookmarks} page={currentPage} totalPages={totalPages} loading={false} />
+      <div >
+        
+        <JobList jobs={jobs} page={currentPage} totalPages={totalPages} loading={false} />
       </div>
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error:", error.message);
 
     return (
