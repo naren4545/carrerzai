@@ -7,6 +7,7 @@ interface JobDetailsProps {
   applicants: number;
   about: string;
   responsibilities: string[];
+  views: number;
 }
 
 
@@ -60,7 +61,7 @@ interface JobDetailsProps {
 
 // }
 
-const JobDetails: React.FC<JobDetailsProps> = ({ openings, applicants, about, responsibilities }) => {
+const JobDetails: React.FC<JobDetailsProps> = ({ openings,views, applicants, about, responsibilities }) => {
   return (
     
     <div className="p-6 py-8  mx-auto">
@@ -72,7 +73,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({ openings, applicants, about, re
         </div>
         <div className=" p-4 rounded-lg  flex items-center justify-between">
 
-        <div className="flex space-x-4 w-full justify-between md:text-[32px] text-[10px]">
+        <div className="flex space-x-4 items-center w-full justify-between md:text-[32px] text-[10px]">
           <div className=" font-medium">No of Openings: {openings}</div>
           <div className=" font-medium flex items-center">
           <svg className='mr-2 md:w-auto w-[16px]' width="42" height="30" viewBox="0 0 42 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -82,7 +83,11 @@ const JobDetails: React.FC<JobDetailsProps> = ({ openings, applicants, about, re
             {applicants} Applicants Applied
           </div>
         </div>
+        
       </div>
+      <div className="p-4 md:text-[32px] text-[10px]">
+          No of views:{views}
+        </div>
       </div>
       {/* About the Job */}
       <section className="mb-6">

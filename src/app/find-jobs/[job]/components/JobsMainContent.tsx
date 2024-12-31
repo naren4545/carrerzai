@@ -29,6 +29,29 @@ const JobsMainContent: React.FC<JobCardProps> = ({ job }) => {
     return `${mins} mins. ago`;
   };
 
+
+  function formatTime(createdAt: string) {
+    const now = new Date();
+    const createdDate = new Date(createdAt);
+    const diff = now.getTime() - createdDate.getTime(); // Time difference in milliseconds
+
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = Math.floor(days / 30);
+
+    if (seconds < 60) return { text: `${seconds} sec${seconds > 1 ? "s" : ""} ago`, earlyApplicant: true };
+    if (minutes < 60) return { text: `${minutes} min${minutes > 1 ? "s" : ""} ago`, earlyApplicant: true };
+    if (hours < 24) return { text: `${hours} hour${hours > 1 ? "s" : ""} ago`, earlyApplicant: true };
+    if (days < 2) return { text: `${days} day${days > 1 ? "s" : ""} ago`, earlyApplicant: true };
+    if (days < 30) return { text: `${days} day${days > 1 ? "s" : ""} ago`, earlyApplicant: false };
+    return { text: `${months} month${months > 1 ? "s" : ""} ago`, earlyApplicant: false };
+  }
+
+  const timeInfo = formatTime(job.createdAt);
+
+
   return (
    
     <div className="  pb-7 p-7  h-fit bg-white border-b border-black ">
@@ -73,8 +96,8 @@ const JobsMainContent: React.FC<JobCardProps> = ({ job }) => {
       </div>
 
       <div className="mt-3 md:text-xl text-[10px] text-[#FF6700] flex items-center gap-5">
-       <a href='/'  className='flex items-center p-2 rounded-lg border-[#FF6700] border '> <Image src={timeFill} alt="Clock" className="w-4 h-4 mr-2" />
-        {timeSincePosted(job.createdAt)}</a> • <span className="ml-1 md:text-sm text-[10px]">Be an early applicant</span>
+       <p  className='flex items-center p-2 rounded-lg border-[#FF6700] border '> <Image src={timeFill} alt="Clock" className="w-4 h-4 mr-2" />
+        {timeInfo.text}</p> • <span className="ml-1 md:text-sm text-[10px]">{timeInfo.earlyApplicant ? "Be an early applicant":""}</span>
       </div>
     </div>
     

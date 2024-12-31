@@ -43,7 +43,7 @@ const Header: React.FC =  () => {
   const { 
     isPinqueryLoggedIn, 
    
-    
+    profile,
    loading
     
     
@@ -52,7 +52,7 @@ const Header: React.FC =  () => {
   // Check if the current pathname is '/find-job/jobs'
   const isFindJobPage = pathname === '/find-jobs/jobs' || pathname==='/find-jobs/internships';
 const isLogin=  isPinqueryLoggedIn
-console.log("isFindJobPage",isLogin)
+
 
 
 if( loading){

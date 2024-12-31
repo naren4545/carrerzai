@@ -17,20 +17,29 @@ import dobIcon from '../../assests/uil_calender.svg';
 
 interface Profile {
   _id: string;
-  userFirstName: string;
-  userLastName: string;
-  userEmail: string;
-  userAddress: string;
+  name: string;
+
+  email: string;
+  location: string;
   userPhoneNumber: string;
-  userGender: string;
-  userQualification: string;
+  gender: string;
+  
+education: string;
   DOB: string;
 }
 
 interface ProfileCardProps {
   profile: Profile;
 }
+const formatDateOfBirth = (dob:string) => {
+  const date = new Date(dob);
 
+  // Format to "31 December 2024"
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const formattedDate = date.toLocaleDateString("en-US");
+
+  return formattedDate;
+};
 const ProfileComponent: React.FC<ProfileCardProps> = ({ profile }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isImageUploadOpen, setIsImageUploadOpen] = useState(false);
@@ -45,7 +54,7 @@ const ProfileComponent: React.FC<ProfileCardProps> = ({ profile }) => {
   };
 
   const handleSave = (updatedProfile: Profile) => {
-    setProfileData(updatedProfile);
+    setProfileData(pre=>({...pre,updatedProfile}));
     setIsEditOpen(false);
   };
 
@@ -58,23 +67,24 @@ const ProfileComponent: React.FC<ProfileCardProps> = ({ profile }) => {
     <div className="mx-auto  rounded-lg py-7 shadow-md relative my-10 max-w-[1100px]">
       <div className="max-w-[800px] mx-auto py-5">
         <div className="grid grid-cols-3 gap-5">
-          <button type="button" className="relative cursor-pointer block" onClick={handleImageClick}>
+          <button type="button" className="relative cursor-pointer flex " onClick={handleImageClick}>
             <Image src={imge} alt="Profile" className="" />
           </button>
           <div className="ml-4 col-span-2 flex items-center">
             <div>
-            <h2 className="text-5xl mb-3  font-bold">
-              {profileData.userFirstName} {profileData.userLastName}
+            <h2 className="md:text-5xl text-lg mb-3  font-bold">
+              {profileData.name}
             </h2>
-            <p className="text-xl">{profileData.userEmail}</p>
-            <div className="py-4 text-xl">
+            <p className="md:text-xl text-sm">{profileData.email}</p>
+            <div className="py-4 md:text-xl text-sm">
               <p className="flex items-center pb-3 gap-3">
                 <Image src={degree} alt="Degree Icon" /> 
-                <span>{profileData.userQualification}</span>
+                <span>{profileData.education
+}</span>
               </p>
               <p className="flex items-center gap-3">
                 <Image src={location} alt="Location Icon" /> 
-                <span>{profileData.userAddress}</span>
+                <span>{profileData.location}</span>
               </p>
               <button
                 type="button"
@@ -96,33 +106,33 @@ const ProfileComponent: React.FC<ProfileCardProps> = ({ profile }) => {
         </button>
       </div>
       
-      <div className="mt-4 pt-4  text-2xl max-w-[800px] mx-auto grid grid-cols-2 gap-5">
+      <div className="mt-4 pt-4  md:text-xl text-xs max-w-[800px] mx-auto grid grid-cols-2  gap-5">
         <div className="flex items-start gap-3 pb-5">
-          <Image src={emailIcon} alt="Email Icon" /> 
+          <Image src={emailIcon} alt="Email Icon" className='md:w-auto w-5' /> 
           <div>
             <p className="text-[#5E5E5E]">Email</p>
-            <p>{profileData.userEmail}</p>
+            <p>{profileData.email}</p>
           </div>
         </div>
         <div className="flex items-start gap-3 pb-5">
-          <Image src={phoneIcon} alt="Phone Icon" /> 
+          <Image src={phoneIcon} alt="Phone Icon" className='md:w-auto w-5'/> 
           <div>
             <p className="text-[#5E5E5E]">Contact number</p>
-            <p>{profileData.userPhoneNumber}</p>
+            <p>{}</p>
           </div>
         </div>
         <div className="flex items-start gap-3 pb-5">
-          <Image src={genderIcon} alt="Gender Icon" /> 
+          <Image src={genderIcon} alt="Gender Icon" className='md:w-auto w-5'/> 
           <div>
             <p className="text-[#5E5E5E]">Gender</p>
-            <p>{profileData.userGender}</p>
+            <p>{profileData.gender}</p>
           </div>
         </div>
         <div className="flex items-start gap-3 pb-5">
-          <Image src={dobIcon} alt="Date of Birth Icon" /> 
+          <Image src={dobIcon} alt="Date of Birth Icon" className='md:w-auto w-5'/> 
           <div>
             <p className="text-[#5E5E5E]">Date of Birth</p>
-            {<p>{profileData.DOB}</p>}
+            {<p>{formatDateOfBirth(profileData.DOB)}</p>}
           </div>
         </div>
       </div>

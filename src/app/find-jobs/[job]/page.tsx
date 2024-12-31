@@ -38,7 +38,7 @@ const JobPage = async ({ params }: JobPageProps) => {
   }
 
   const data = await res.json();
-
+console.log(data)
   return (
     <>
       <Header />

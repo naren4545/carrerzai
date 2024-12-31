@@ -1,11 +1,12 @@
 "use client";
+import Link from "next/link";
 import  { useState } from "react";
 
-const ResumeButtons = () => {
+const ResumeButtons = ({url="/"}:{url:string}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
-
+const [view,setView]=useState(url)
   const handleUploadClick = () => {
     setIsPopupOpen(true);
   };
@@ -71,11 +72,11 @@ console.log(token)
   };
 
   return (
-    <div className="flex ">
+    <div className="flex justify-center gap-4  pt-10">
       {/* Generate Resume Button */}
-      <button type="button" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-        Generate Resume
-      </button>
+      <Link href={view} target="_blank" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+        View Resume
+      </Link>
 
       {/* Upload Resume Button */}
       <button type="button"
@@ -87,7 +88,7 @@ console.log(token)
 
       {/* Popup */}
       {isPopupOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 m-0 mx-0">
           <div className="bg-white p-6 rounded shadow-lg max-w-md w-full">
             <h2 className="text-lg font-semibold mb-4">Upload Your Resume</h2>
             <input

@@ -9,7 +9,7 @@ async function fetchData(searchParams) {
 
   // Determine the API endpoint based on token presence
   const endpoint = pinqueryToken
-    ? 'https://www.careerzai.com/v1/job/filtered'
+    ? 'https://www.careerzai.com/v1/job/user/filtered'
     : 'https://www.careerzai.com/v1/job/filtered';
 
   // Extract search parameters

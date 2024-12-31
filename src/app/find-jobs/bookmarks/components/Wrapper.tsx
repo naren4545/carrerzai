@@ -25,7 +25,7 @@ async function fetchData(searchParams:any) {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
-        ...(pinqueryToken && { Authorization: `Bearer ${pinqueryToken}` }), // Include token if it exists
+       Authorization: `Bearer ${pinqueryToken}`, // Include token if it exists
       },
     }
   );
@@ -43,6 +43,8 @@ export default async function Wrapper({ searchParams }: any) {
     const { bookmarks, currentPage, totalPages } = await fetchData(searchParams);
    const data=await fetchData(searchParams);
 console.log(data)
+
+
     return (
       <div>
      

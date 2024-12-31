@@ -19,7 +19,7 @@ interface SocialLinkCardProps {
 }
 
 const SocialLinkCard: React.FC<SocialLinkCardProps> = ({ link, onEdit, onDelete }) => (
-  <div className="flex items-start justify-between bg-white rounded-lg p-4 mb-4">
+  <div className="flex items-start justify-between overflow-hidden bg-white rounded-lg p-4 mb-4">
     <div className="flex items-start gap-4">
       <div>
         <h3 className="text-xl font-medium">{link.network}</h3>
@@ -83,7 +83,7 @@ const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({ socialLinks }) 
 
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 overflow-hidden">
         <h2 className="text-2xl font-bold">Social Links</h2>
         <button type="button" onClick={handleAdd} className="text-orange-500 flex items-center gap-2">
           Add <FaPlus />

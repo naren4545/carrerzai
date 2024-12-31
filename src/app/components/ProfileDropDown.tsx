@@ -14,6 +14,7 @@ import {
     
   } from "@/components/ui/dropdown-menu"
 import { useDualAuth } from "@/context/AuthContext";
+
 interface ProfileLink {
   href: string;
   label: string;
@@ -39,16 +40,16 @@ export default function ProfileDropDown({ name, email }: ProfileDropDownProps) {
   const { 
     isPinqueryLoggedIn, 
    
-    pinqueryLogout
+    pinqueryLogout,
    
-    
+    profile
     
   } = useDualAuth();
   return (
     <div className=" bg-white rounded-lg py-5 ">
       <div className="pb-2 px-4 ">
-        <h3 className="md:text-3xl text-xl font-medium mb-2">{name}</h3>
-        <p className="md:text-2xl text-base mb-2">{email}</p>
+        <h3 className="md:text-3xl text-xl font-medium mb-2">{profile.name}</h3>
+        <p className="md:text-2xl text-base mb-2">{profile.email}</p>
       </div>
       <DropdownMenuSeparator  className="bg-black" />
       <ul className="space-y-6 pt-4">

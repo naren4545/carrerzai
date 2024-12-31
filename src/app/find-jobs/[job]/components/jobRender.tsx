@@ -26,11 +26,10 @@ console.log(job)
         <h1 className='text-center md:text-4xl text-sm py-5 pb-10'>{job.title}</h1>
     <div className='max-w-[1136px] mx-auto border rounded-lg  shadow-md '>
     <JobsMainContent job={job}/>
-    <JobDetails openings={job.openings} about={job.description} applicants={3} responsibilities={job.keyResponsibilities} />
+    <JobDetails openings={job.openings} about={job.description} applicants={job.numberOfApplicants} responsibilities={job.keyResponsibilities} views={job.numberOfViews} />
    <SkillTags skills={job.skillTags}/>
-   <JobRequirements experience="Any Experience" education={job.requirements}/>
-   <CompanyInfo website='company’s website if any' name='Company Name' address='Shop No. 12, R-15, Sector 3, Near Gomti Nagar Railway Station, Gomti Nagar, 
-Lucknow, Uttar Pradesh, PIN Code: 226010, India' />
+   <JobRequirements experience={job.experience} education={job.requirements}/>
+   <CompanyInfo website={job.companyWebsite} name={job.company} address={job.location} />
 <Buttons id={job._id} applied={job.applied}/>
     </div>
     </div>

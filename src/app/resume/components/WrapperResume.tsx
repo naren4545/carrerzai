@@ -9,6 +9,7 @@ import ProjectsSection from './ProjextSection';
 import ResumeButtons from './ResumeButtons';
 import Skills from './Skills';
 import SocialLinksSection from './SocialLinksSection';
+import TemplateSelector from './TemplateSelector';
 import WorkExperienceSection from './WorkExperienceSection';
 
 interface Skill {
@@ -57,6 +58,7 @@ interface Link {
 
 interface UserProfile {
   _id: string;
+  Achievements: string[];
   userFirstName: string;
   userLastName: string;
   userEmail: string;
@@ -72,6 +74,9 @@ interface UserProfile {
   createdBy: string;
   createdAt: string;
   updatedAt: string;
+  resumePdfKey:any;
+  selectedResumeTemplate: string;
+  resumeUrl:string;
   __v: number;
 }
 
@@ -80,7 +85,13 @@ interface WrapperResumeProps {
 }
 
 const WrapperResume: React.FC<WrapperResumeProps> = ({ userProfile }) => {
+console.log(userProfile.resumeUrl)
 
+
+
+if (Object.keys(userProfile).length === 0) {
+ return <p>Loading</p>
+}
     const profile={
 
         _id: userProfile._id,
@@ -92,22 +103,27 @@ const WrapperResume: React.FC<WrapperResumeProps> = ({ userProfile }) => {
  userGender: "Female",
  userQualification:userProfile.education[0].degree
     }
+
+
+
+
+   
   return (
     <div className="py-10 max-w-[1340px] mx-auto">
       <div className="grid md:grid-cols-2 grid-cols-1 gap-10 px-4">
         <div className='flex flex-col gap-8'>
           <ProfileCard profile={profile} />
           <div className=" bg-white rounded-lg shadow-md ">
-          <AchievementsSection achievements={userProfile.achievements}/>
+          <AchievementsSection achievements={userProfile.Achievements}/>
           </div>
 
-          <Skills/>
+          <Skills skills={userProfile.skills}/>
 
-          <Languages/>
+          {/* <Languages/> */}
         </div>
         <div className='grid grid-cols-1 gap-8'>
           {/* Additional content can be added here */}
-         <JobProfileTitle />
+         {/* <JobProfileTitle /> */}
 
 <div className=" bg-white rounded-lg shadow-md ">
 
@@ -125,8 +141,14 @@ const WrapperResume: React.FC<WrapperResumeProps> = ({ userProfile }) => {
         
         </div>
       </div>
-      <ResumeButtons/>
+      <ResumeButtons url={userProfile.resumeUrl}/>
+      <TemplateSelector resumePdfKey={userProfile.resumePdfKey}
+selectedResumeTemplate={userProfile.selectedResumeTemplate}
+
+      />
     </div>
+
+    
   );
 };
 

@@ -18,29 +18,29 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ name, website, address }) => 
           <Image src={company} alt="Company Icon" className="w-[50px] md:w-auto"  />
         </div>
         <div>
-          <h3 className="md:text-[28px] text-sm font-semibold">Company Name</h3>
+          <h3 className="md:text-[28px] text-sm font-semibold">{name}</h3>
           {website ? (
             <a
               href={website}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 md:text-xl text-sm underline"
+              className="text-blue-500 md:text-xl mt-3 text-sm underline"
             >
               company’s website if any
             </a>
           ) : (
-            <p className="text-gray-500 text-sm">No website available</p>
+            <p className="text-gray-500 text-sm mt-3">No website available</p>
           )}
         </div>
       </div>
 
-      <div className="flex items-center pb-8">
-        <div className="w-[60%] md:w-auto md:mr-3">
+      <div className="flex items-center gap-3 pb-8">
+        <div className="md:w-auto md:mr-3">
           <Image src={addressImg} alt="Address Icon" className="w-[50px] md:w-auto" />
         </div>
         <div>
           <h3 className="md:text-[28px] text-sm font-semibold">Company Address</h3>
-          <p className="text-blue-500 md:text-xl text-sm">{address}</p>
+          <p className="text-blue-500 md:text-xl text-sm mt-3">{address}</p>
         </div>
       </div>
     </div>

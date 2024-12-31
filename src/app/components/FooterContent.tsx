@@ -5,6 +5,7 @@ import linkden from '../assests/linkden.svg'
 import facebook from '../assests/facebook.svg'
 import twitter from '../assests/twitter.svg'
 import instagram from '../assests/instagram.svg'
+import Link from 'next/link';
 
 const FooterContent = () => {
   return (
@@ -39,10 +40,10 @@ const FooterContent = () => {
           <div>
             <h3 className="md:text-2xl text-base font-bold mb-4">About</h3>
             <ul className="space-y-2 md:text-xl text-sm">
-              <li><a href="/" className="text-gray-400 hover:text-white">Jobs</a></li>
-              <li><a href="/" className="text-gray-400 hover:text-white">Internships</a></li>
-              <li><a href="/" className="text-gray-400 hover:text-white">How It Works</a></li>
-              <li><a href="/" className="text-gray-400 hover:text-white">FAQ's</a></li>
+              <li><Link href="/find-jobs/jobs" className="text-gray-400 hover:text-white">Jobs</Link></li>
+              <li><Link href="/find-jobs/internships" className="text-gray-400 hover:text-white">Internships</Link></li>
+              <li><Link href="/find-jobs" className="text-gray-400 hover:text-white">How It Works</Link></li>
+              <li><Link href="/" className="text-gray-400 hover:text-white">FAQ's</Link></li>
             </ul>
           </div>
 

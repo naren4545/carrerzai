@@ -39,8 +39,8 @@ const [appliedJob,setAppliedJob]=useState(applied)
   
         toast({
           variant: "default",
-          title: "Applied Successfully",
-          description: "Friday, February 10, 2023 at 5:57 PM",
+          title: "Application Submitted Successfully",
+          description: "Your job application has been received and is under review.",
         });
   setAppliedJob(true)
         return response.data;

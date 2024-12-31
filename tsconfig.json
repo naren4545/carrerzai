@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/find-jobs/jobs/components/AccessCard.tsx", "src/app/find-jobs/jobs/components/Wrapper.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/find-jobs/jobs/components/AccessCard.tsx", "src/app/find-jobs/jobs/components/Wrapper.jsx", "src/app/profile/components/ProfileForm.jsx"],
   "exclude": ["node_modules"]
 }

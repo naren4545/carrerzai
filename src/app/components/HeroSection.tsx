@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 import bannerImg from '../assests/herosectinbg.png'
 import topright from '../assests/top-right.svg'
+import Link from 'next/link'
 export default function HeroSection() {
   return (
     <section>
@@ -38,12 +39,12 @@ Between Talent and Opportunity <div className='bg-[linear-gradient(180deg,_trans
 helps businesses find the right talent.</p>
 
 <div className="flex lg:flex-row flex-col justify-center items-center gap-4 font-p text-xl font-bold lg:space-x-4">
-            <a href='/' className="px-3 py-5 min-w-[250px ]  text-white bg-[#0068FF] rounded-md hover:bg-blue-700">
+            <Link href='/find-jobs/jobs' className="px-3 py-5 min-w-[250px ]  text-white bg-[#0068FF] rounded-md hover:bg-blue-700">
             Browse Opportunities
-            </a>
-            <a href='/' className="px-3 min-w-[250px] py-5 text-[#0068FF] bg-white border-[#0068FF] border rounded-md hover:bg-blue-900">
+            </Link>
+            <Link href='/' className="px-3 min-w-[250px] py-5 text-[#0068FF] bg-white border-[#0068FF] border rounded-md hover:bg-blue-900">
             Hire Now
-            </a>
+            </Link>
           </div>
 </div>
       </div>

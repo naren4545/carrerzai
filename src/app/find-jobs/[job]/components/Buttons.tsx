@@ -42,8 +42,8 @@ export default function Buttons({id,applied}:{id:string;applied:boolean}) {
 
       toast({
         variant: "default",
-        title: "Applied Successfully",
-        description: "Friday, February 10, 2023 at 5:57 PM",
+        title: "Application Submitted Successfully",
+        description: "Your job application has been received and is under review.",
       });
 setAppliedJob(true)
       return response.data;
@@ -80,9 +80,7 @@ setAppliedJob(true)
 
   return (  <div className='p-6 py-16'>
       <div className="flex flex-row justify-center  gap-3 md:text-2xl text-sm">
-          <button type='button' className="text-blue-600 border md:min-w-[250px] min-w-[127px]  border-blue-600 px-7 py-2 rounded md:mb-0">
-            View Details
-          </button>
+         
           <button onClick={handelAppy} disabled={appliedJob} type='button' className="bg-blue-600 md:min-w-[250px] min-w-[127px] text-white px-7 py-2 rounded">
           {  appliedJob ? "Applied" : "Apply Now"}
           </button>

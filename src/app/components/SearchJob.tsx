@@ -5,12 +5,13 @@ import Image from "next/image";
 import SearchIcon from "../assests/searchjobsearchicon.svg";
 import LocationIcon from "../assests/weui_location-outlined.svg";
 import CategoryIcon from "../assests/categoryjobsearch.svg";
+import { useRouter } from "next/navigation";
 
 const SearchJob: React.FC = () => {
   const [job, setJob] = useState("");
   const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
-
+const router=useRouter()
   useEffect(() => {
     // This runs only on the client
     // Place any client-specific logic here
@@ -18,6 +19,8 @@ const SearchJob: React.FC = () => {
 
   const handleSearch = () => {
     console.log({ job, location, category });
+    router.push(`/find-jobs/jobs?location=${encodeURIComponent(location)}&skilltag=${job?job:""}&industry=${category?encodeURIComponent(category):""}`);
+
   };
 
   return (
