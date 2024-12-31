@@ -44,6 +44,7 @@ export async function requestNotificationPermission(): Promise<string | null> {
     //   console.log('Notification permission denied');
     //   return null;
     // }
+    return null;
   } catch (error) {
     console.error('Error requesting notification permission:', error);
     return null;
