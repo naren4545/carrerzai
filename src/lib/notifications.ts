@@ -40,11 +40,11 @@ export async function requestNotificationPermission(): Promise<string | null> {
       console.log('FCM token:', fcmToken);
       return fcmToken;
     }
-    //  else {
-    //   console.log('Notification permission denied');
-    //   return null;
-    // }
-    return null;
+     else {
+      console.log('Notification permission denied');
+      return null;
+    }
+   
   } catch (error) {
     console.error('Error requesting notification permission:', error);
     return null;
