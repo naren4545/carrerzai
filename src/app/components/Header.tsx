@@ -36,14 +36,15 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import NotificationPermission from "@/components/NotificationPermission";
 
 
 const Header: React.FC =  () => {
   const pathname = usePathname();
   const { 
     isPinqueryLoggedIn, 
+   isProfile,
    
-    profile,
    loading
     
     
@@ -59,9 +60,12 @@ if( loading){
 
   return <div/>;
 }
+console.log(isLogin, isProfile)
+ 
   return (
     <header className="shadow-custom-light  z-50 backdrop-filter backdrop-blur-lg w-full lg:sticky top-0 ">
       {/* Container for max width */}
+{isLogin && isProfile && <NotificationPermission/>}
       <div className="lg:border-b border-[#B6B6B6] px-3 py-3 lg:pt-6 pb-3 w-full">
         {/* Logo and Buttons */}
         <div className="flex flex-row items-center justify-between max-w-[1350px] w-full mx-auto ">
