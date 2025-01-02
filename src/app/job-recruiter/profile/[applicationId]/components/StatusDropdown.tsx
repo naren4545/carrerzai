@@ -1,6 +1,7 @@
 "use client";
 import  { useState } from "react";
 import Cookies from "js-cookie";
+import { useToast } from "@/hooks/use-toast";
 interface StatusDropdownProps {
   initialStatus: string; // The initial status value, e.g., "In Review"
   itemId: number; // The ID of the item to update the status for
@@ -9,7 +10,7 @@ interface StatusDropdownProps {
 const StatusDropdown: React.FC<StatusDropdownProps> = ({ initialStatus, itemId }) => {
   const [status, setStatus] = useState<string>(initialStatus);
   const [loading, setLoading] = useState<boolean>(false);
-
+    const  {toast} =useToast()
   const handleStatusChange = async (newStatus: string) => {
     setLoading(true);
 
@@ -28,13 +29,25 @@ const StatusDropdown: React.FC<StatusDropdownProps> = ({ initialStatus, itemId }
       if (response.ok) {
         const data: { status: string } = await response.json(); // Assuming the API returns the updated status
         setStatus(data.status);
-        alert("Status updated successfully");
+        toast({
+          variant: "default",
+          title: `Status Updated to ${data.status}`,
+          description: `Successfully updated status to ${data.status}`,
+         
+        });
       } else {
         throw new Error("Failed to update status");
       }
     } catch (error) {
       console.error("Error updating status:", error);
-      alert("Failed to update status");
+      
+
+      toast({
+        variant: "destructive",
+        title: "Failed to update status",
+        description: "Please try again",
+       
+      });
     } finally {
       setLoading(false);
     }

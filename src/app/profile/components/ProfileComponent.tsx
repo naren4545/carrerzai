@@ -54,7 +54,13 @@ const ProfileComponent: React.FC<ProfileCardProps> = ({ profile }) => {
   };
 
   const handleSave = (updatedProfile: Profile) => {
-    setProfileData(pre=>({...pre,updatedProfile}));
+
+    console.log("Updated Profile:", updatedProfile);
+    setProfileData(pre=>{
+
+console.log({...pre,...updatedProfile})
+      return {...pre,...updatedProfile};
+    });
     setIsEditOpen(false);
   };
 

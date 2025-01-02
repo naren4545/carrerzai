@@ -24,6 +24,7 @@ type JobApplication = {
   resumeId: {
     userFirstName: string;
     userLastName: string;
+    resumeUrl: string;
   };
 };
 
@@ -65,11 +66,11 @@ console.log("hii")
   return (
     <div className="max-w-[1356px] mx-auto block md:hidden ">
       
-      <div className="shadow-xl py-3">
+      <div className="shadow-xl py-3 block md:hidden">
         {JobApplications.map((app) => (
           <div
             key={app._id}
-            className="grid grid-cols-5 my-8 mx-4 gap-5 md:text-2xl text-[#FF6700] py-8 px-4 items-center border-b border-gray-300 bg-[#FFEADC] hover:bg-orange-100"
+            className="grid  md:hidden grid-cols-5 my-8 mx-4 gap-5 md:text-2xl text-[#FF6700] py-8 px-4 items-center border-b border-gray-300 bg-[#FFEADC] hover:bg-orange-100"
           >
             <div className="col-span-3">
               <div className="font-medium text-sm">{app.resumeId?.userFirstName} {app.resumeId?.userLastName}</div>
@@ -81,11 +82,11 @@ console.log("hii")
             <div className="col-span-2">
               <div className="text-right">
                 <button type="button" className="text-orange-500">
-                  <Image
+                 <a href={app.resumeId?.resumeUrl} target="_blank" rel="noopener noreferrer"><Image
                     src={previewImd}
                     alt="Bookmark"
                     className="md:w-auto w-5"
-                  />
+                  /></a> 
                 </button>
               </div>
             </div>

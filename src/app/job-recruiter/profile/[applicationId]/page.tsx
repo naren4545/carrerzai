@@ -15,11 +15,11 @@ export default function page() {
   return (
     <main>
       
-   <Header/>
-   <Profile/>
+
+
    <Wrapper id={applicationId}/>
-   <Application id={applicationId}/>
-   <Footer/>
+   {/* <Application id={applicationId}/> */}
+ 
     </main>
   )
 }

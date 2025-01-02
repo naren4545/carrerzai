@@ -224,7 +224,9 @@ resumeValidate()
     <div>
       <Header/>
       {/* <ProfileForm/> */}
-{isResume && resume?<WrapperResume userProfile={resume}/>:<ResumeForm />}
+{!isResume && <ResumeForm />}
+
+{isResume && resume && <WrapperResume userProfile={resume}/>}
       <Footer/>
 
 

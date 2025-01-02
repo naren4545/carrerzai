@@ -67,9 +67,14 @@ console.log(transformFormData())
 
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        throw new Error(`API Error: ${error.response?.data || error.message}`);
+        console.error('Error posting job:', error.response?.data || error.message);
+        toast({
+          variant: "destructive",
+          title: "Error while posting job",
+          description: error.response?.data.error.issues[0].message || error.message,
+         
+        });
       }
-      throw error;
     }
   };
 
@@ -88,7 +93,7 @@ console.log(transformFormData())
   };
 
   return (
-    <div className="py-10 max-w-[1340px] mx-auto">
+    <div className="py-10 max-w-[1340px] mx-auto text-center" >
       <button
         type="submit"
         onClick={handlePostJob}
