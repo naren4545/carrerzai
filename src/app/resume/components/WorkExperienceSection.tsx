@@ -6,7 +6,7 @@ import workIcon from '../../assests/fe_paper-plane.svg';
 import editPen from '../../assests/clarity_edit-line.svg';
 import deleteIcon from '../../assests/material-symbols-light_delete-outline.svg';
 import InputField from './ui/InputField';
-
+import Cookies from "js-cookie";
 interface WorkExperience {
   role: string;
   company: string;
@@ -54,9 +54,37 @@ const WorkExperienceCard: React.FC<WorkExperienceCardProps> = ({ work, onEdit, o
 
 interface WorkExperienceSectionProps {
   workExperiences: WorkExperience[];
+  _id:string
 }
 
-const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({ workExperiences }) => {
+const handleResume = async (formData: any,id:string) => {
+  const pinqueryToken = Cookies.get("pinquery_token");
+  try {
+    const response = await fetch(
+      `https://www.careerzai.com/v1/resume/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${pinqueryToken}`, // Include the Authorization token
+        },
+        body: JSON.stringify(formData), // Convert the data to a JSON string
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to send data: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    console.log("Data sent successfully:", result);
+  } catch (error: any) {
+    console.error("Error sending data:", error.message);
+  }
+};
+
+
+const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({ workExperiences,_id }) => {
   const [workList, setWorkList] = useState<WorkExperience[]>(workExperiences);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [currentWork, setCurrentWork] = useState<WorkExperience >( {
@@ -89,14 +117,22 @@ const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({ workExper
     setWorkList((prev) => prev.filter((work) => work._id !== id));
   };
 
-  const handleSave = (work: WorkExperience) => {
-    if (currentWork) {
-      setWorkList((prev) =>
-        prev.map((w) => (w._id === currentWork._id ? { ...work, _id: currentWork._id } : w))
-      );
+  const handleSave = async(work: WorkExperience) => {
+    let data={work:{}}
+    if (currentWork._id) {
+      setWorkList((prev) =>{
+        data.work = prev.map((w) => (w._id === currentWork._id ? { ...work, _id: currentWork._id } : w))
+       return prev.map((w) => (w._id === currentWork._id ? { ...work, _id: currentWork._id } : w))
+   
+      });
     } else {
-      setWorkList((prev) => [...prev, { ...work, _id: Date.now().toString() }]);
+      setWorkList((prev) =>{
+        data.work=[...prev, { ...work, _id: Date.now().toString() }]
+        return [...prev, { ...work, _id: Date.now().toString() }]
+      
+      });
     }
+   await handleResume(data,_id)
     setIsFormOpen(false);
   };
 

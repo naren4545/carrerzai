@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import InputField from './ui/InputField';
-
+import Cookies from "js-cookie";
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type NewType = (updatedProfile: any) => void;
 
 interface ProfileEditFormProps {
   profile: {
+    _id: string;
     userFirstName: string;
     userLastName: string;
     userEmail: string;
@@ -19,12 +20,14 @@ interface ProfileEditFormProps {
 }
 
 const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ profile, onSave, onClose }) => {
+ 
   const [formData, setFormData] = useState({
+    _id: profile._id,
     userFirstName: profile.userFirstName,
     userLastName: profile.userLastName,
     userEmail: profile.userEmail,
     userPhoneNumber: profile.userPhoneNumber,
-    userAddress: profile.userAddress,
+userAddress: profile.userAddress,
     userGender: profile.userGender,
    
   });
@@ -34,8 +37,37 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ profile, onSave, onCl
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async(e: React.FormEvent) => {
     e.preventDefault();
+
+    const handleResume=async(formData:any)=>{
+      const pinqueryToken = Cookies.get("pinquery_token");
+      try {
+        const response = await fetch(`https://www.careerzai.com/v1/resume/${formData._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${pinqueryToken}`, // Include the Authorization token
+          },
+          body: JSON.stringify(formData), // Convert the data to a JSON string
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Failed to send data: ${response.statusText}`);
+        }
+    
+        const result = await response.json();
+        console.log("Data sent successfully:", result);
+        
+        
+      } catch (error:any) {
+        console.error("Error sending data:", error.message);
+      }
+    
+    }  
+
+
+await handleResume(formData);
     onSave(formData);
   };
 
@@ -44,7 +76,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ profile, onSave, onCl
       onClose();
     }
   };
-
+console.log(formData)
   return (
     // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
 <div onClick={handleBackdropClick} className="fixed inset-0 flex items-center z-50 py-5 justify-center bg-black bg-opacity-50 top-0">
@@ -94,29 +126,9 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ profile, onSave, onCl
             onChange={handleChange}
             options={[]}
           />
-          <InputField
-            label="Current Location"
-            name="userAddress"
-            placeholder="Enter your location"
-            value={formData.userAddress}
-            onChange={handleChange}
-            options={[]}
-          />
+       
 
-          <InputField
-            label="Gender"
-            name="userGender"
-            type="radio"
-            value={formData.userGender}
-            onChange={handleChange}
-            placeholder=""
-            options={[
-              { label: 'Female', value: 'Female' },
-              { label: 'Male', value: 'Male' },
-              { label: 'Other', value: 'Other' },
-              
-            ]}
-          />
+         
 
 
 <div className='text-center'>

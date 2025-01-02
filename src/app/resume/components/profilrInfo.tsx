@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileEditForm from './ProfileEditForm';
 import ImageUpload from './ImageUpload';
 import Image from 'next/image';
@@ -34,7 +34,17 @@ interface ProfileCardProps {
 const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isImageUploadOpen, setIsImageUploadOpen] = useState(false);
-  const [profileData, setProfileData] = useState<Profile>(profile);
+  const [profileData, setProfileData] = useState<Profile>();
+
+// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+useEffect(() => {
+if(profileData) return
+
+console.log("running")
+setProfileData(profile)
+
+
+}, [profile])
 
   const handleEditClick = () => {
     setIsEditOpen(true);
@@ -45,7 +55,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
   };
 
   const handleSave = (updatedProfile: Profile) => {
-    setProfileData(updatedProfile);
+    
+    setProfileData(pre=>{
+      console.log({...pre,...updatedProfile})
+      return {...pre, ...updatedProfile }
+    }
+    );
     setIsEditOpen(false);
   };
 
@@ -53,19 +68,25 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
     console.log("Image uploaded: ", imageUrl);
     setIsImageUploadOpen(false);
   };
+console.log(profileData)
 
+
+if(!profileData){
+  return (<p/>
+  )
+  }
   return (
-    <div className="mx-auto bg-[#A6CBFF] rounded-lg py-7 shadow-md relative">
+    <div className="mx-auto bg-[#A6CBFF] w-full rounded-lg py-7 shadow-md relative  ">
       <div className="flex justify-between items-center px-4">
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 grid-cols-1 gap-8">
           <button type="button" className="relative cursor-pointer block" onClick={handleImageClick}>
             <Image src={imge} alt="Profile" className="border border-gray-300" />
           </button>
           <div className="ml-4 col-span-2">
-            <h2 className="text-[32px] leading-10 font-bold">
+            <h2 className="lg:text-[32px] text-base md:leading-10 font-bold overflow-x-hidden" >
               {profileData.userFirstName} {profileData.userLastName}
             </h2>
-            <p className="text-xl">{profileData.userEmail}</p>
+            <p className="md:text-xl text-sm overflow-x-hidden">{profileData.userEmail}</p>
             <div className="py-4 text-xl">
               <p className="flex items-center pb-3 gap-3">
                 <Image src={degree} alt="Degree Icon" /> 
@@ -94,7 +115,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
         </button>
       </div>
       <hr className="border-black" />
-      <div className="mt-4 pt-4 px-4 text-2xl">
+      <div className="mt-4 pt-4 px-4 md:text-2xl text-base">
         <div className="flex items-start gap-3 pb-5">
           <Image src={emailIcon} alt="Email Icon" /> 
           <div>

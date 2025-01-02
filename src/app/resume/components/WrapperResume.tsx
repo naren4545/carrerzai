@@ -128,9 +128,9 @@ if (Object.keys(userProfile).length === 0) {
 <div className=" bg-white rounded-lg shadow-md ">
 
 
-<EducationSection education={userProfile.education}/>
+<EducationSection education={userProfile.education} _id={userProfile._id}/>
 <hr className="border-black"/>
-<WorkExperienceSection workExperiences={userProfile.work} />
+<WorkExperienceSection workExperiences={userProfile.work} _id={userProfile._id} />
 <hr className="border-black"/>
 <ProjectsSection projects={userProfile.projects}/>
 <hr className="border-black"/>

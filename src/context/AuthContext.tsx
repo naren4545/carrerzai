@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import { usePathname, useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import { Award } from "lucide-react";
 
 interface DualAuthContextType {
   isPinqueryLoggedIn: boolean;
@@ -36,7 +37,7 @@ export const DualAuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [isProfile, setIsProfile] = useState(true);
   const [isResume, setIsResume] = useState(true);
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useState<any>(null);
   const [resume, setResume] = useState({});
   const router = useRouter();
   const pathname = usePathname();
@@ -67,6 +68,7 @@ export const DualAuthProvider: React.FC<{ children: React.ReactNode }> = ({
           // Call the async function here
         } else if (pintudeToken) {
           validateAndSetPintudeToken(pintudeToken); // Assuming this is also async
+          await fetchProfile();
         } else {
           console.log("No token found");
         }
@@ -95,6 +97,42 @@ export const DualAuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
     fetchData();
   }, [isProfile]);
+
+
+  const fetchProfile = async () => {
+    try {
+      const pintudeToken = Cookies.get("pintude_token");
+
+      if (!pintudeToken) {
+        return;
+      
+      }
+      // Replace with your actual API endpoint
+      const response = await fetch('https://www.careerzai.com/v1/business', {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${pintudeToken}` // Include the token in the header
+        }
+      });
+      if (response.ok) {
+        const data = await response.json()
+        setProfile(data)
+        setIsProfile(true);
+       
+      } else {
+        // If no profile exists, set to null
+        setProfile(null)
+        setIsProfile(false);
+        router.push("/job-recruiter/profile/business-profile");
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error)
+      setProfile(null)
+      setIsProfile(false);
+      router.push("/job-recruiter/profile/business-profile");
+    }
+  }
 
   const resumeValidate = async () => {
     if (isProfile === false) return;

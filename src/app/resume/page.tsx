@@ -6,6 +6,7 @@ import  ProfileForm  from "./components/ProfileForm";
 import WrapperResume from "./components/WrapperResume";
 import ResumeForm from "./components/ResumeForm";
 import { useEffect, useState } from "react";
+import ResumeBuilderSkeleton from "./components/ResumeBuilderSkeleton";
 // const userProfile = {
 //     _id: "672bce872c01d2e6ce23f3db",
 //     userFirstName: "Jossd",
@@ -226,7 +227,7 @@ resumeValidate()
       {/* <ProfileForm/> */}
 {!isResume && <ResumeForm />}
 
-{isResume && resume && <WrapperResume userProfile={resume}/>}
+{isResume && resume ?<WrapperResume userProfile={resume}/>:<ResumeBuilderSkeleton/>}
       <Footer/>
 
 

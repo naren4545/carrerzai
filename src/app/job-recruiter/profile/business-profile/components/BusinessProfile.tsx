@@ -6,6 +6,7 @@ import { set, z } from 'zod'
 import Cookies from "js-cookie";
 import { Autocomplete } from './Autocomplete';
 import { useToast } from '@/hooks/use-toast';
+import { useDualAuth } from '@/context/AuthContext';
 const businessProfileSchema = z.object({
   name: z.string().min(2, "Business name must be at least 2 characters long"),
   description: z.string().min(10, "Description must be at least 10 characters long"),
@@ -57,11 +58,11 @@ const industryOptions = [
   "Finance", "Manufacturing", "Retail", "Construction", "Transportation", "Hospitality", "Telecommunications"
 ]
 export default function BusinessProfile() {
-  const [profile, setProfile] = useState<BusinessProfile | null>(emptyProfile)
+  const [profile, setProfile] = useState<BusinessProfile | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [errors, setErrors] = useState<Partial<z.ZodFormattedError<BusinessProfile>>>({})
 const [isbixProfile, setIsbixProfile] = useState(false)
-
+const {isProfile,setIsProfile}=useDualAuth()
 const { toast } = useToast()
 
   useEffect(() => {
@@ -128,6 +129,7 @@ const { toast } = useToast()
       if (response.ok) {
         const updatedProfile = await response.json()
         method === 'POST' && setIsbixProfile(true) 
+        method === 'POST' && setIsProfile(true)
         setProfile(updatedProfile.business)
         setIsEditing(false)
 
@@ -200,7 +202,7 @@ const { toast } = useToast()
       })
     }
   }
-  if (profile === null && !isEditing) {
+  if (profile === null && !isEditing && !isProfile) {
     return (
       <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-[1100px] mx-auto">

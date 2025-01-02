@@ -74,11 +74,12 @@ const templates=isUploaded?templates2:templates1;
 
 
       setSelectedTemplate(templateId)
-toast({
+      toast({
         variant: "default",
-        title: "Application Submitted Successfully",
-        description: "Your job application has been received and is under review.",
+        title: "Template Selected Successfully!",
+        description: "Your chosen template has been applied. You can now customize it to suit your needs.",
       });
+      
 
 
     } catch (error) {
