@@ -1,7 +1,7 @@
 export default function ResumeBuilderSkeleton() {
     return (
       <div className="py-10 max-w-[1340px] mx-auto">
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-10 px-4">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-10 px-4">
           <div className="flex flex-col gap-8">
             {/* Profile Section */}
             <div className="bg-gray-100 rounded-lg py-7 shadow-md relative">
