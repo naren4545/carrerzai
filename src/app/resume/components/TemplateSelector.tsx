@@ -46,7 +46,8 @@ const templates1: Template[] = [
 
 export default function TemplateSelector({resumePdfKey,selectedResumeTemplate
 }: {resumePdfKey:any,selectedResumeTemplate
-  :string
+  :string,
+ 
 }) {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(selectedResumeTemplate)
   const pinqueryToken = Cookies.get("pinquery_token");
@@ -71,7 +72,7 @@ const templates=isUploaded?templates2:templates1;
       }
 
       const data = await response.json()
-
+console.log(data.presignedUrl,"url")
 
       setSelectedTemplate(templateId)
       toast({

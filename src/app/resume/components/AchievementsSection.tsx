@@ -5,6 +5,8 @@ import editPen from '../../assests/clarity_edit-line.svg';
 import deleteIcon from '../../assests/material-symbols-light_delete-outline.svg';
 import InputField from "./ui/InputField";
 import Image from "next/image";
+import handleResume from "@/utils/resumeUpdate";
+
 
 interface AchievementCardProps {
   achievement: string;
@@ -28,9 +30,10 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement, onEdit, 
 
 interface AchievementsSectionProps {
   achievements: string[];
+  _id: string
 }
 
-const AchievementsSection: React.FC<AchievementsSectionProps> = ({ achievements }) => {
+const AchievementsSection: React.FC<AchievementsSectionProps> = ({ achievements,_id }) => {
   const [achievementList, setAchievementList] = useState<string[]>(achievements);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [currentAchievement, setCurrentAchievement] = useState<string >("");
@@ -46,16 +49,26 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({ achievements 
   };
 
   const handleDelete = (achievement: string) => {
-    setAchievementList((prev) => prev.filter((a) => a !== achievement));
+    setAchievementList((prev) => {
+      const data={Achievements:prev.filter((a) => a !== achievement)}
+      handleResume(data,_id)
+     return prev.filter((a) => a !== achievement)});
   };
 
   const handleSave = (achievement: string) => {
+    console.log("save")
     if (currentAchievement) {
-      setAchievementList((prev) =>
-        prev.map((a) => (a === currentAchievement ? achievement : a))
-      );
+      console.log("hii")
+      setAchievementList((prev) =>{
+       const data={Achievements:prev.map((a) => (a === currentAchievement ? achievement : a))}
+       handleResume(data,_id)
+       return prev.map((a) => (a === currentAchievement ? achievement : a))
+    });
     } else {
-      setAchievementList((prev) => [...prev, achievement]);
+      setAchievementList((prev) =>{ 
+        const data={Achievements:[...prev, achievement]}
+        handleResume(data,_id)
+        return[...prev, achievement]});
     }
     setIsFormOpen(false);
   };

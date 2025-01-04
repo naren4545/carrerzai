@@ -5,17 +5,19 @@ import { FaPlus } from 'react-icons/fa';
 import editPen from '../../assests/clarity_edit-line.svg';
 import deleteIcon from '../../assests/material-symbols-light_delete-outline.svg';
 import InputField from './ui/InputField';
+import handleResume from '@/utils/resumeUpdate';
+import { assert } from 'console';
 
 interface SocialLink {
   network: string;
   url: string;
-  _id: string;
+  _id: string|null;
 }
 
 interface SocialLinkCardProps {
   link: SocialLink;
   onEdit: (link: SocialLink) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string|null) => void;
 }
 
 const SocialLinkCard: React.FC<SocialLinkCardProps> = ({ link, onEdit, onDelete }) => (
@@ -41,9 +43,10 @@ const SocialLinkCard: React.FC<SocialLinkCardProps> = ({ link, onEdit, onDelete 
 
 interface SocialLinksSectionProps {
   socialLinks: SocialLink[];
+  _id: string
 }
 
-const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({ socialLinks }) => {
+const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({ socialLinks ,_id}) => {
   const [links, setLinks] = useState<SocialLink[]>(socialLinks);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [currentLink, setCurrentLink] = useState<SocialLink >({
@@ -66,17 +69,26 @@ const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({ socialLinks }) 
     setIsFormOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    setLinks((prev) => prev.filter((link) => link._id !== id));
+  const handleDelete = (id: string|null) => {
+    setLinks((prev) =>{
+      const data={links:prev.filter((link) => link._id !== id)}
+      handleResume(data,_id)
+      return prev.filter((link) => link._id !== id)
+    });
   };
 
-  const handleSave = (link: SocialLink) => {
-    if (currentLink) {
-      setLinks((prev) =>
-        prev.map((l) => (l._id === currentLink._id ? { ...link, _id: currentLink._id } : l))
-      );
+  const handleSave = async(link: SocialLink) => {
+    if (currentLink._id) {
+      setLinks((prev) =>{
+const data={links:prev.map((l) => (l._id === currentLink._id ? { ...link, _id: currentLink._id } : l))}
+handleResume(data,_id)
+      return  prev.map((l) => (l._id === currentLink._id ? { ...link, _id: currentLink._id } : l))
+    });
     } else {
-      setLinks((prev) => [...prev, { ...link, _id: Date.now().toString() }]);
+
+      const data={links:[...links, { ...link, _id: null }]}
+     const res=await handleResume(data,_id)
+      setLinks(res.links);
     }
     setIsFormOpen(false);
   };

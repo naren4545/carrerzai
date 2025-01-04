@@ -1,12 +1,103 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
 import Link from "next/link";
 import  { useState } from "react";
+import tem1 from '../../assests/image 6.png'
+import tem2 from '../../assests/image 7 (1).png'
+import Cookies from "js-cookie";
 
-const ResumeButtons = ({url="/"}:{url:string}) => {
+
+
+
+
+
+interface Template {
+  id: string
+  name: string
+  image: any
+}
+
+const templates2: Template[] = [
+  {
+    id: "Template1",
+    name: "Template 1",
+    image: tem1
+  },
+  {
+    id: "Template2",
+    name: "Template 2",
+    image: tem2
+  },
+  {
+    id: "Uploaded",
+    name: "Uploaded",
+    image: tem2
+  }
+]
+
+const templates1: Template[] = [
+  {
+    id: "Template1",
+    name: "Template 1",
+    image: tem1
+  },
+  {
+    id: "Template2",
+    name: "Template 2",
+    image: tem2
+  },
+ 
+]
+const ResumeButtons = ({url="/",resumePdfKey,selectedResumeTemplate}:{url:string,resumePdfKey:any,selectedResumeTemplate
+  :string,
+ }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 const [view,setView]=useState(url)
+
+const [selectedTemplate, setSelectedTemplate] = useState<string>(selectedResumeTemplate)
+const pinqueryToken = Cookies.get("pinquery_token");
+// biome-ignore lint/complexity/noUselessTernary: <explanation>
+const isUploaded=resumePdfKey?.Uploaded
+?true:false;
+console.log(isUploaded,resumePdfKey)
+const templates=isUploaded?templates2:templates1;
+const { toast } = useToast()
+const selectTemplate = async (templateId: string) => {
+  try {
+    const response = await fetch(`https://www.careerzai.com/v1/resume/pdf/select/${templateId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${pinqueryToken}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to select template')
+    }
+
+    const data = await response.json()
+console.log(data.presignedUrl,"url")
+
+    setSelectedTemplate(templateId)
+    setView(data.presignedUrl)
+    toast({
+      variant: "default",
+      title: "Template Selected Successfully!",
+      description: "Your chosen template has been applied. You can now customize it to suit your needs.",
+    });
+    
+
+
+  } catch (error) {
+    console.error('Error selecting template:', error)
+  }
+}
+
+
   const handleUploadClick = () => {
     setIsPopupOpen(true);
   };
@@ -72,7 +163,7 @@ console.log(token)
   };
 
   return (
-    <div className="flex justify-center gap-4  pt-10">
+    <><div className="flex justify-center gap-4  pt-10">
       {/* Generate Resume Button */}
       <Link href={view} target="_blank" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
         View Resume
@@ -115,6 +206,39 @@ console.log(token)
         </div>
       )}
     </div>
+
+
+    <div className="container mx-auto px-4 py-8 max-w-[600px]">
+          <h1 className="text-3xl font-bold text-center mb-8">
+            Select your Resume Template
+          </h1>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+           { templates.map((template) => (
+              // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+    <div
+                key={template.id}
+                className={`relative mx-auto cursor-pointer w-fit transition-all duration-200 hover:scale-105 ${
+                  selectedTemplate === template.id
+                    ? 'ring-2 ring-primary ring-offset-2'
+                    : ''
+                }`}
+                onClick={() => selectTemplate(template.id)}
+              >
+                <div className="">
+                  <Image
+                    src={template.image}
+                    alt={template.name}
+                  
+                    className=""
+                  />
+    
+                  <p className="text-center">{template.name}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+    </>
   );
 };
 

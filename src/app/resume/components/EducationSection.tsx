@@ -9,44 +9,21 @@ import deleteIcon from "../../assests/material-symbols-light_delete-outline.svg"
 import InputField from "./ui/InputField";
 import Cookies from "js-cookie";
 import { on } from "events";
+import handleResume from "@/utils/resumeUpdate";
 interface Education {
   degree: string;
   institution: string;
   startDate: string;
   completionDate: string;
-  _id: string;
+  _id: string | null;
 }
 
 interface EducationCardProps {
   education: Education;
   onEdit: (education: Education) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string|null) => void;
 }
-const handleResume = async (formData: any,id:string) => {
-  const pinqueryToken = Cookies.get("pinquery_token");
-  try {
-    const response = await fetch(
-      `https://www.careerzai.com/v1/resume/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${pinqueryToken}`, // Include the Authorization token
-        },
-        body: JSON.stringify(formData), // Convert the data to a JSON string
-      }
-    );
 
-    if (!response.ok) {
-      throw new Error(`Failed to send data: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    console.log("Data sent successfully:", result);
-  } catch (error: any) {
-    console.error("Error sending data:", error.message);
-  }
-};
 
 const EducationCard: React.FC<EducationCardProps> = ({
   education,
@@ -136,8 +113,14 @@ const EducationSection: React.FC<EducationSectionProps> = ({ education,_id }) =>
     setIsFormOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    setEducationList((prev) => prev.filter((edu) => edu._id !== id));
+  const handleDelete = (id: string|null) => {
+    setEducationList((prev) =>{ 
+      
+const data={education:prev.filter((edu) => edu._id !== id)}
+handleResume(data,_id)
+      return data.education
+    
+    });
   };
 
   const handleSave = async(education: Education) => {
@@ -145,12 +128,19 @@ const EducationSection: React.FC<EducationSectionProps> = ({ education,_id }) =>
     let data={education:{}};
     if (currentEducation._id) {
       console.log("hii")
+
+
+
+
+      
       setEducationList((prev) => {
         data.education = prev.map((edu) =>
           edu._id === currentEducation._id
             ? { ...education, _id: currentEducation._id }
             : edu
         );
+
+        handleResume(data,_id)
         return prev.map((edu) =>
           edu._id === currentEducation._id
             ? { ...education, _id: currentEducation._id }
@@ -158,20 +148,17 @@ const EducationSection: React.FC<EducationSectionProps> = ({ education,_id }) =>
         );
       });
     } else {
-      setEducationList((prev) =>{ 
-        
-        data.education=[
-          ...prev,
-          { ...education, _id: Date.now().toString() },
-        ]
-        return [
-        ...prev,
-        { ...education, _id: Date.now().toString() },
-      ]});
+
+
+      data.education= [...educationList, { ...education, _id: null }]
+
+     const res=await handleResume(data,_id)
+     console.log(res)
+      setEducationList(res.education);
     }
 console.log(data)
 
-   await handleResume(data,_id);
+  
     setIsFormOpen(false);
   };
 
@@ -208,13 +195,7 @@ console.log(data)
 };
 
 interface EducationFormProps {
-  initialData?: {
-    degree: string;
-    institution: string;
-    startDate: string;
-    completionDate: string;
-    _id?: string;
-  };
+  initialData?: Education;
   isEditing: boolean;
   onSave: (updatedEducation: {
     degree: string;

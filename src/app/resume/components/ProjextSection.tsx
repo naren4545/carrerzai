@@ -6,30 +6,32 @@ import ProjectIcon from '../../assests/fe_paper-plane.svg';
 import editPen from '../../assests/clarity_edit-line.svg';
 import deleteIcon from '../../assests/material-symbols-light_delete-outline.svg';
 import InputField from './ui/InputField';
+import handleResume from '@/utils/resumeUpdate';
+import { date } from 'zod';
 
 interface Project {
   name: string;
   description: string;
   keywords: string[];
   url: string;
-  _id: string;
+  _id: string|null;
 }
 
 interface ProjectCardProps {
   project: Project;
   onEdit: (project: Project) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string|null) => void;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEdit, onDelete }) => {
   return (
-    <div className="flex items-start justify-between bg-white rounded-lg p-4 mb-4">
+    <div className="flex items-start justify-between bg-white rounded-lg p-4 mb-4 overflow-hidden">
       <div className="flex items-start gap-4">
         <Image src={ProjectIcon} alt="Project Icon" className="" />
         <div>
           <h3 className="text-xl font-medium">{project.name}</h3>
           <p className="text-base">{project.description}</p>
-          <div className="flex gap-2 mt-2">
+          <div className="flex gap-2 mt-2 flex-wrap">
             {project.keywords.map((keyword, index) => (
               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 <span key={index} className="bg-gray-100 text-gray-800 py-1 px-2 rounded">
@@ -56,9 +58,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEdit, onDelete }) 
 
 interface ProjectsSectionProps {
   projects: Project[];
+  _id: string
 }
 
-const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) => {
+const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects,_id }) => {
   const [projectList, setProjectList] = useState<Project[]>(projects);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [currentProject, setCurrentProject] = useState<Project>({
@@ -85,17 +88,26 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) => {
     setIsFormOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    setProjectList((prev) => prev.filter((project) => project._id !== id));
+  const handleDelete = (id: string|null) => {
+    setProjectList((prev) =>{ 
+      const data={project:prev.filter((project) => project._id !== id)}
+      handleResume(data,_id)
+      return data.project
+    });
   };
 
-  const handleSave = (project: Project) => {
-    if (currentProject) {
-      setProjectList((prev) =>
-        prev.map((p) => (p._id === currentProject._id ? { ...project, _id: currentProject._id } : p))
-      );
+  const handleSave = async(project: Project) => {
+    if (currentProject._id) {
+      setProjectList((prev) =>{
+const data={projects:prev.map((p) => (p._id === currentProject._id ? { ...project, _id: currentProject._id } : p))}
+handleResume(data,_id)
+      return data.projects
+    });
     } else {
-      setProjectList((prev) => [...prev, { ...project, _id: Date.now().toString() }]);
+
+      const data={projects:[...projectList, { ...project, _id: null }]}
+      const res=await handleResume(data,_id)
+      setProjectList(res.projects);
     }
     setIsFormOpen(false);
   };
@@ -136,6 +148,16 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, onSave, onClose 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+
+
+  const handleKeywordsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      keywords: value.split(',').map((keyword) => keyword.trim()), // Split and trim each keyword
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -188,7 +210,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, onSave, onClose 
               name="keywords"
               placeholder="Enter keywords separated by commas"
               value={formData.keywords.join(', ')}
-              onChange={(e:NewType) => handleChange({ ...e, target: { ...e.target, value: e.target.value.split(', ') } })}
+              onChange={handleKeywordsChange}
             />
           </div>
           <div className="mb-4">
@@ -210,7 +232,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, onSave, onClose 
             >
               Cancel
             </button>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            <button type="submit" onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
               {initialData ? 'Save Changes' : 'Add Project'}
             </button>
           </div>

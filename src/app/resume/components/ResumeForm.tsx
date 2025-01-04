@@ -1,9 +1,9 @@
 'use client'
 
-import { useDualAuth } from '@/context/AuthContext'
-import type React from 'react'
 import { useState } from 'react'
+import { useDualAuth } from '@/context/AuthContext'
 import { z } from 'zod'
+import { TagInput } from './tag-input'
 import Cookies from "js-cookie";
 const schema = z.object({
   userFirstName: z.string().min(1, "First name must not be empty"),
@@ -70,7 +70,7 @@ const schema = z.object({
   Achievements: z.array(z.string().min(1, "Achievement must not be empty")).optional(),
 })
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof schema>;
 
 const ResumeForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -79,219 +79,198 @@ const ResumeForm: React.FC = () => {
     userEmail: '',
     userAddress: '',
     userPhoneNumber: '',
-    skills: [{ skillType: '', skillValues: [''] }],
-    work: [{ role: '', company: '', startDate: '', endDate: '', description: '' }],
-    education: [{ degree: '', institution: '', startDate: '', completionDate: '' }],
-    certifications: [{ description: '', issuedBy: '', url: '' }],
-    projects: [{ name: '', description: '', keywords: [''], url: '' }],
-    links: [{ network: '', url: '' }],
-    Achievements: [''],
-  })
-  const{isResume,setIsResume}=useDualAuth()
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({})
+    skills: [],
+    work: [],
+    education: [],
+    certifications: [],
+    projects: [],
+    links: [],
+    Achievements: [],
+  });
+  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+
+ 
+  
+
+  const { setIsResume } = useDualAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const pinqueryToken = Cookies.get("pinquery_token");
+    const result = schema.safeParse(formData);
+    if (result.success) {
+      console.log('Form data:', result.data);
+      try {
+        const response = await fetch('https://www.careerzai.com/v1/resume', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${pinqueryToken}`,
+          },
+          body: JSON.stringify(result.data),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Success:', data);
+        setIsResume(true)
+        alert('Form submitted successfully!');
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    } else {
+      setErrors(result.error.flatten().fieldErrors);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: keyof FormData, index?: number, subField?: string) => {
-    const value = e.target.value
-    setFormData((prev) => {
-      if (index !== undefined && subField) {
-        const newArray = [...prev[field] as any[]]
-        newArray[index] = { ...newArray[index], [subField]: value }
-        return { ...prev, [field]: newArray }
-      } else if (Array.isArray(prev[field])) {
-        const newArray = [...prev[field] as any[]]
-        newArray[index as number] = value
-        return { ...prev, [field]: newArray }
-      } else {
-        return { ...prev, [field]: value }
-      }
-    })
-  }
+    if(field==="Achievements"){
+      setFormData(prev => ({ ...prev, Achievements:prev.Achievements?.map((a,i) => (i === index ? e.target.value : a)) }));
+      return
+    }
+    
+    if (index === undefined || subField === undefined) {
+      setFormData(prev => ({ ...prev, [field]: e.target.value }));
+    } else {
+      setFormData(prev => {
+        const newArray = [...prev[field] as any[]];
+        newArray[index] = { ...newArray[index], [subField]: e.target.value };
+        return { ...prev, [field]: newArray };
+      });
+    }
+  };
 
-  const addArrayItem = (field: keyof FormData) => {
-    setFormData((prev) => {
-      const newArray = [...(prev[field] as any[] || [])]
-      if (field === 'skills') newArray.push({ skillType: '', skillValues: [''] })
-      else if (field === 'work') newArray.push({ role: '', company: '', startDate: '', endDate: '', description: '' })
-      else if (field === 'education') newArray.push({ degree: '', institution: '', startDate: '', completionDate: '' })
-      else if (field === 'certifications') newArray.push({ description: '', issuedBy: '', url: '' })
-      else if (field === 'projects') newArray.push({ name: '', description: '', keywords: [''], url: '' })
-      else if (field === 'links') newArray.push({ network: '', url: '' })
-      else if (field === 'Achievements') newArray.push('')
-      return { ...prev, [field]: newArray }
-    })
-  }
+  const addArrayItem = (field: string) => {
+    setFormData(prev => {
+      if (field === 'skills') {
+        return { ...prev, skills: [...(prev.skills || []), { skillType: '', skillValues: [] }] };
+      } else if (field === 'work') {
+        return { ...prev, work: [...(prev.work || []), { role: '', company: '', startDate: '', endDate: '', description: '' }] };
+      } else if (field === 'education') {
+        return { ...prev, education: [...(prev.education || []), { degree: '', institution: '', startDate: '', completionDate: '' }] };
+      } else if (field === 'certifications') {
+        return { ...prev, certifications: [...(prev.certifications || []), { description: '', issuedBy: '', url: '' }] };
+      } else if (field === 'projects') {
+        return { ...prev, projects: [...(prev.projects || []), { name: '', description: '', keywords: [], url: '' }] };
+      } else if (field === 'links') {
+        return { ...prev, links: [...(prev.links || []), { network: '', url: '' }] };
+      } else if (field === 'Achievements') {
+        return { ...prev, Achievements: [...(prev.Achievements || ["",]), ''] };
+      }
+      return prev;
+    });
+  };
 
   const removeArrayItem = (field: keyof FormData, index: number) => {
-    setFormData((prev) => {
-      const newArray = [...(prev[field] as any[])]
-      newArray.splice(index, 1)
-      return { ...prev, [field]: newArray }
-    })
-  }
-
-  const handleSubmit =async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    try {
-      const validatedData = schema.parse(formData)
-      console.log(validatedData)
-      console.log(formData)
-
-      const handleResme=async()=>{
-        const pinqueryToken = Cookies.get("pinquery_token");
-        try {
-          const response = await fetch("https://www.careerzai.com/v1/resume", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${pinqueryToken}`, // Include the Authorization token
-            },
-            body: JSON.stringify(formData), // Convert the data to a JSON string
-          });
-      
-          if (!response.ok) {
-            throw new Error(`Failed to send data: ${response.statusText}`);
-          }
-      
-          const result = await response.json();
-          console.log("Data sent successfully:", result);
-          setIsResume(true)
-          alert('Form submitted successfully!')
-        } catch (error:any) {
-          console.error("Error sending data:", error.message);
-        }
-      
-      }  
-
-await handleResme()
-
-      setErrors({})
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        console.log("hii")
-        const newErrors: Partial<Record<keyof FormData, string>> = {}
-        error.errors.forEach((err) => {
-          const path = err.path.join('.')
-          newErrors[path as keyof FormData] = err.message
-        })
-        setErrors(newErrors)
-      }
-    }
-  }
-
+    setFormData(prev => {
+      const newArray = [...prev[field] as any[]];
+      newArray.splice(index, 1);
+      return { ...prev, [field]: newArray };
+    });
+  };
+console.log(formData.Achievements);
   return (
-    <form onSubmit={handleSubmit} className="max-w-[1300px] my-10 w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">User Resume</h1>
+    <form onSubmit={handleSubmit} className="max-w-[1300px] my-10 w-full mx-auto p-6 bg-white shadow-lg rounded-lg space-y-8">
+      <h1 className="text-4xl font-bold mb-6 text-center text-gray-800">User Resume</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <label htmlFor="userFirstName" className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-          <input
-            type="text"
-            id="userFirstName"
-            value={formData.userFirstName}
-            onChange={(e) => handleChange(e, 'userFirstName')}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {errors.userFirstName && <p className="text-red-500 text-xs mt-1">{errors.userFirstName}</p>}
+      {/* Personal Information */}
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Personal Information</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label htmlFor="userFirstName" className="block text-sm font-medium text-gray-700">First Name</label>
+            <input
+              id="userFirstName"
+              type="text"
+              value={formData.userFirstName}
+              onChange={(e) => handleChange(e, 'userFirstName')}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.userFirstName && <p className="text-red-500 text-xs">{errors.userFirstName}</p>}
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="userLastName" className="block text-sm font-medium text-gray-700">Last Name</label>
+            <input
+              id="userLastName"
+              type="text"
+              value={formData.userLastName}
+              onChange={(e) => handleChange(e, 'userLastName')}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.userLastName && <p className="text-red-500 text-xs">{errors.userLastName}</p>}
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="userEmail" className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              id="userEmail"
+              type="email"
+              value={formData.userEmail}
+              onChange={(e) => handleChange(e, 'userEmail')}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.userEmail && <p className="text-red-500 text-xs">{errors.userEmail}</p>}
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="userAddress" className="block text-sm font-medium text-gray-700">Address</label>
+            <input
+              id="userAddress"
+              type="text"
+              value={formData.userAddress}
+              onChange={(e) => handleChange(e, 'userAddress')}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.userAddress && <p className="text-red-500 text-xs">{errors.userAddress}</p>}
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="userPhoneNumber" className="block text-sm font-medium text-gray-700">Phone Number</label>
+            <input
+              id="userPhoneNumber"
+              type="tel"
+              value={formData.userPhoneNumber}
+              onChange={(e) => handleChange(e, 'userPhoneNumber')}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.userPhoneNumber && <p className="text-red-500 text-xs">{errors.userPhoneNumber}</p>}
+          </div>
         </div>
-        <div>
-          <label htmlFor="userLastName" className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-          <input
-            type="text"
-            id="userLastName"
-            value={formData.userLastName}
-            onChange={(e) => handleChange(e, 'userLastName')}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {errors.userLastName && <p className="text-red-500 text-xs mt-1">{errors.userLastName}</p>}
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <label htmlFor="userEmail" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input
-          type="email"
-          id="userEmail"
-          value={formData.userEmail}
-          onChange={(e) => handleChange(e, 'userEmail')}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        {errors.userEmail && <p className="text-red-500 text-xs mt-1">{errors.userEmail}</p>}
-      </div>
-
-      <div className="mb-6">
-        <label htmlFor="userAddress" className="block text-sm font-medium text-gray-700 mb-1">Address (Optional)</label>
-        <input
-          type="text"
-          id="userAddress"
-          value={formData.userAddress}
-          onChange={(e) => handleChange(e, 'userAddress')}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-
-      <div className="mb-6">
-        <label htmlFor="userPhoneNumber" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-        <input
-          type="tel"
-          id="userPhoneNumber"
-          value={formData.userPhoneNumber}
-          onChange={(e) => handleChange(e, 'userPhoneNumber')}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        {errors.userPhoneNumber && <p className="text-red-500 text-xs mt-1">{errors.userPhoneNumber}</p>}
       </div>
 
       {/* Skills */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Skills</h2>
-        {formData.skills?.map((skill, index) => (
-          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md">
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Skills</h2>
+        {formData.skills?.map((skill, skillIndex) => (
+          <div key={skillIndex} className="mb-4 p-4 border border-gray-200 rounded-md transition-all duration-300 ease-in-out">
             <div className="mb-2">
-              <label htmlFor={`skillType-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Skill Type</label>
+              <label htmlFor={`skillType-${skillIndex}`} className="block text-sm font-medium text-gray-700">Skill Type</label>
               <input
+                id={`skillType-${skillIndex}`}
                 type="text"
-                id={`skillType-${index}`}
                 value={skill.skillType}
-                onChange={(e) => handleChange(e, 'skills', index, 'skillType')}
+                onChange={(e) => handleChange(e, 'skills', skillIndex, 'skillType')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            {skill.skillValues.map((value, valueIndex) => (
-              <div key={valueIndex} className="mb-2">
-                <label htmlFor={`skillValue-${index}-${valueIndex}`} className="block text-sm font-medium text-gray-700 mb-1">Skill Value</label>
-                <input
-                  type="text"
-                  id={`skillValue-${index}-${valueIndex}`}
-                  value={value}
-                  onChange={(e) => {
-                    const newSkills = [...formData.skills!]
-                    newSkills[index].skillValues[valueIndex] = e.target.value
-                    setFormData({ ...formData, skills: newSkills })
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() => {
-                const newSkills = [...formData.skills!]
-                newSkills[index].skillValues.push('')
-                setFormData({ ...formData, skills: newSkills })
-              }}
-              className="mt-2 px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Add Skill Value
-            </button>
-            <button
-              type="button"
-              onClick={() => removeArrayItem('skills', index)}
-              className="mt-2 ml-2 px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              Remove Skill
-            </button>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Skill Values</label>
+              <TagInput
+                tags={skill.skillValues}
+                onTagsChange={(newTags) => {
+                  const newSkills = [...formData.skills!];
+                  newSkills[skillIndex].skillValues = newTags;
+                  setFormData({ ...formData, skills: newSkills });
+                }}
+              />
+            </div>
+            <div className="mt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={() => removeArrayItem('skills', skillIndex)}
+                className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Remove Skill
+              </button>
+            </div>
           </div>
         ))}
         <button
@@ -304,69 +283,70 @@ await handleResme()
       </div>
 
       {/* Work Experience */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Work Experience</h2>
-        {formData.work?.map((job, index) => (
-          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md">
-            <div className="mb-2">
-              <label htmlFor={`role-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Work Experience</h2>
+        {formData.work?.map((work, index) => (
+          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md transition-all duration-300 ease-in-out">
+            <div className="space-y-2">
+              <label htmlFor={`role-${index}`} className="block text-sm font-medium text-gray-700">Role</label>
               <input
-                type="text"
                 id={`role-${index}`}
-                value={job.role}
+                type="text"
+                value={work.role}
                 onChange={(e) => handleChange(e, 'work', index, 'role')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="mb-2">
-              <label htmlFor={`company-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Company</label>
+            <div className="space-y-2">
+              <label htmlFor={`company-${index}`} className="block text-sm font-medium text-gray-700">Company</label>
               <input
-                type="text"
                 id={`company-${index}`}
-                value={job.company}
+                type="text"
+                value={work.company}
                 onChange={(e) => handleChange(e, 'work', index, 'company')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4 mb-2">
-              <div>
-                <label htmlFor={`startDate-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label htmlFor={`startDate-${index}`} className="block text-sm font-medium text-gray-700">Start Date</label>
                 <input
-                  type="date"
                   id={`startDate-${index}`}
-                  value={job.startDate}
+                  type="date"
+                  value={work.startDate}
                   onChange={(e) => handleChange(e, 'work', index, 'startDate')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div>
-                <label htmlFor={`endDate-${index}`} className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+              <div className="space-y-2">
+                <label htmlFor={`endDate-${index}`} className="block text-sm font-medium text-gray-700">End Date</label>
                 <input
-                  type="date"
                   id={`endDate-${index}`}
-                  value={job.endDate}
+                  type="date"
+                  value={work.endDate}
                   onChange={(e) => handleChange(e, 'work', index, 'endDate')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
-            <div className="mb-2">
-              <label htmlFor={`description-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <div className="space-y-2">
+              <label htmlFor={`description-${index}`} className="block text-sm font-medium text-gray-700">Description</label>
               <textarea
                 id={`description-${index}`}
-                value={job.description}
+                value={work.description}
                 onChange={(e) => handleChange(e, 'work', index, 'description')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                rows={3}
-              ></textarea>
+              />
             </div>
-            <button
-              type="button"
-              onClick={() => removeArrayItem('work', index)}
-              className="mt-2 px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              Remove Job
-            </button>
+            <div className="mt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={() => removeArrayItem('work', index)}
+                className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Remove Work Experience
+              </button>
+            </div>
           </div>
         ))}
         <button
@@ -374,64 +354,66 @@ await handleResme()
           onClick={() => addArrayItem('work')}
           className="mt-2 px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
-          Add Job
+          Add Work Experience
         </button>
       </div>
 
       {/* Education */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Education</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Education</h2>
         {formData.education?.map((edu, index) => (
-          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md">
-            <div className="mb-2">
-              <label htmlFor={`degree-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Degree</label>
+          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md transition-all duration-300 ease-in-out">
+            <div className="space-y-2">
+              <label htmlFor={`degree-${index}`} className="block text-sm font-medium text-gray-700">Degree</label>
               <input
-                type="text"
                 id={`degree-${index}`}
+                type="text"
                 value={edu.degree}
                 onChange={(e) => handleChange(e, 'education', index, 'degree')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="mb-2">
-              <label htmlFor={`institution-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Institution</label>
+            <div className="space-y-2">
+              <label htmlFor={`institution-${index}`} className="block text-sm font-medium text-gray-700">Institution</label>
               <input
-                type="text"
                 id={`institution-${index}`}
+                type="text"
                 value={edu.institution}
                 onChange={(e) => handleChange(e, 'education', index, 'institution')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4 mb-2">
-              <div>
-                <label htmlFor={`eduStartDate-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label htmlFor={`eduStartDate-${index}`} className="block text-sm font-medium text-gray-700">Start Date</label>
                 <input
-                  type="date"
                   id={`eduStartDate-${index}`}
+                  type="date"
                   value={edu.startDate}
                   onChange={(e) => handleChange(e, 'education', index, 'startDate')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div>
-                <label htmlFor={`completionDate-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Completion Date</label>
+              <div className="space-y-2">
+                <label htmlFor={`completionDate-${index}`} className="block text-sm font-medium text-gray-700">Completion Date</label>
                 <input
-                  type="date"
                   id={`completionDate-${index}`}
+                  type="date"
                   value={edu.completionDate}
                   onChange={(e) => handleChange(e, 'education', index, 'completionDate')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => removeArrayItem('education', index)}
-              className="mt-2 px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              Remove Education
-            </button>
+            <div className="mt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={() => removeArrayItem('education', index)}
+                className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Remove Education
+              </button>
+            </div>
           </div>
         ))}
         <button
@@ -444,47 +426,49 @@ await handleResme()
       </div>
 
       {/* Certifications */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Certifications</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Certifications</h2>
         {formData.certifications?.map((cert, index) => (
-          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md">
-            <div className="mb-2">
-              <label htmlFor={`certDescription-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md transition-all duration-300 ease-in-out">
+            <div className="space-y-2">
+              <label htmlFor={`certDescription-${index}`} className="block text-sm font-medium text-gray-700">Description</label>
               <input
-                type="text"
                 id={`certDescription-${index}`}
+                type="text"
                 value={cert.description}
                 onChange={(e) => handleChange(e, 'certifications', index, 'description')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="mb-2">
-              <label htmlFor={`issuedBy-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Issued By</label>
+            <div className="space-y-2">
+              <label htmlFor={`issuedBy-${index}`} className="block text-sm font-medium text-gray-700">Issued By</label>
               <input
-                type="text"
                 id={`issuedBy-${index}`}
+                type="text"
                 value={cert.issuedBy}
                 onChange={(e) => handleChange(e, 'certifications', index, 'issuedBy')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="mb-2">
-              <label htmlFor={`certUrl-${index}`} className="block text-sm font-medium text-gray-700 mb-1">URL</label>
+            <div className="space-y-2">
+              <label htmlFor={`certUrl-${index}`} className="block text-sm font-medium text-gray-700">URL</label>
               <input
-                type="url"
                 id={`certUrl-${index}`}
+                type="url"
                 value={cert.url}
                 onChange={(e) => handleChange(e, 'certifications', index, 'url')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <button
-              type="button"
-              onClick={() => removeArrayItem('certifications', index)}
-              className="mt-2 px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              Remove Certification
-            </button>
+            <div className="mt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={() => removeArrayItem('certifications', index)}
+                className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Remove Certification
+              </button>
+            </div>
           </div>
         ))}
         <button
@@ -497,61 +481,59 @@ await handleResme()
       </div>
 
       {/* Projects */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Projects</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Projects</h2>
         {formData.projects?.map((project, index) => (
-          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md">
-            <div className="mb-2">
-              <label htmlFor={`projectName-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
+          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md transition-all duration-300 ease-in-out">
+            <div className="space-y-2">
+              <label htmlFor={`projectName-${index}`} className="block text-sm font-medium text-gray-700">Project Name</label>
               <input
-                type="text"
                 id={`projectName-${index}`}
+                type="text"
                 value={project.name}
                 onChange={(e) => handleChange(e, 'projects', index, 'name')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="mb-2">
-              <label htmlFor={`projectDescription-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <div className="space-y-2">
+              <label htmlFor={`projectDescription-${index}`} className="block text-sm font-medium text-gray-700">Description</label>
               <textarea
                 id={`projectDescription-${index}`}
                 value={project.description}
                 onChange={(e) => handleChange(e, 'projects', index, 'description')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                rows={3}
-              ></textarea>
-            </div>
-            <div className="mb-2">
-              <label htmlFor={`projectKeywords-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Keywords (comma-separated)</label>
-              <input
-                type="text"
-                id={`projectKeywords-${index}`}
-                value={project.keywords.join(', ')}
-                onChange={(e) => {
-                  const newProjects = [...formData.projects!]
-                  newProjects[index].keywords = e.target.value.split(',').map(k => k.trim())
-                  setFormData({ ...formData, projects: newProjects })
-                }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="mb-2">
-              <label htmlFor={`projectUrl-${index}`} className="block text-sm font-medium text-gray-700 mb-1">URL</label>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Keywords</label>
+              <TagInput
+                tags={project.keywords}
+                onTagsChange={(newTags) => {
+                  const newProjects = [...formData.projects!];
+                  newProjects[index].keywords = newTags;
+                  setFormData({ ...formData, projects: newProjects });
+                }}
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor={`projectUrl-${index}`} className="block text-sm font-medium text-gray-700">URL</label>
               <input
-                type="url"
                 id={`projectUrl-${index}`}
+                type="url"
                 value={project.url}
                 onChange={(e) => handleChange(e, 'projects', index, 'url')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <button
-              type="button"
-              onClick={() => removeArrayItem('projects', index)}
-              className="mt-2 px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              Remove Project
-            </button>
+            <div className="mt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={() => removeArrayItem('projects', index)}
+                className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Remove Project
+              </button>
+            </div>
           </div>
         ))}
         <button
@@ -564,37 +546,39 @@ await handleResme()
       </div>
 
       {/* Links */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Links</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Links</h2>
         {formData.links?.map((link, index) => (
-          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md">
-            <div className="mb-2">
-              <label htmlFor={`network-${index}`} className="block text-sm font-medium text-gray-700 mb-1">Network</label>
+          <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md transition-all duration-300 ease-in-out">
+            <div className="space-y-2">
+              <label htmlFor={`network-${index}`} className="block text-sm font-medium text-gray-700">Network</label>
               <input
-                type="text"
                 id={`network-${index}`}
+                type="text"
                 value={link.network}
                 onChange={(e) => handleChange(e, 'links', index, 'network')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="mb-2">
-              <label htmlFor={`linkUrl-${index}`} className="block text-sm font-medium text-gray-700 mb-1">URL</label>
+            <div className="space-y-2">
+              <label htmlFor={`linkUrl-${index}`} className="block text-sm font-medium text-gray-700">URL</label>
               <input
-                type="url"
                 id={`linkUrl-${index}`}
+                type="url"
                 value={link.url}
                 onChange={(e) => handleChange(e, 'links', index, 'url')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <button
-              type="button"
-              onClick={() => removeArrayItem('links', index)}
-              className="mt-2 px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              Remove Link
-            </button>
+            <div className="mt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={() => removeArrayItem('links', index)}
+                className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Remove Link
+              </button>
+            </div>
           </div>
         ))}
         <button
@@ -607,22 +591,23 @@ await handleResme()
       </div>
 
       {/* Achievements */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Achievements</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Achievements</h2>
         {formData.Achievements?.map((achievement, index) => (
-          <div key={index} className="mb-2">
+          <div key={index} className="mb-2 flex items-center space-x-2">
             <input
               type="text"
               value={achievement}
               onChange={(e) => handleChange(e, 'Achievements', index)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter achievement"
+              className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
               type="button"
               onClick={() => removeArrayItem('Achievements', index)}
-              className="mt-2 px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
             >
-              Remove Achievement
+              Remove
             </button>
           </div>
         ))}

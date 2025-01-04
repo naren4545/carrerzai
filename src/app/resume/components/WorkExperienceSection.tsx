@@ -7,19 +7,20 @@ import editPen from '../../assests/clarity_edit-line.svg';
 import deleteIcon from '../../assests/material-symbols-light_delete-outline.svg';
 import InputField from './ui/InputField';
 import Cookies from "js-cookie";
+import handleResume from '@/utils/resumeUpdate';
 interface WorkExperience {
   role: string;
   company: string;
   startDate: string;
   endDate: string;
   description: string;
-  _id: string;
+  _id: string|null;
 }
 
 interface WorkExperienceCardProps {
   work: WorkExperience;
   onEdit: (work: WorkExperience) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string|null) => void;
 }
 
 const WorkExperienceCard: React.FC<WorkExperienceCardProps> = ({ work, onEdit, onDelete }) => {
@@ -33,6 +34,7 @@ const WorkExperienceCard: React.FC<WorkExperienceCardProps> = ({ work, onEdit, o
         <div>
           <h3 className="text-xl font-medium">{work.role}</h3>
           <p className="text-base">{work.company}</p>
+          <p className="text-sm">{work.description}</p>
           <div className="flex gap-2 mt-2">
             <span className="bg-blue-100 text-blue-800 py-1 px-2 rounded">
               {startYear} - {endYear}
@@ -57,31 +59,7 @@ interface WorkExperienceSectionProps {
   _id:string
 }
 
-const handleResume = async (formData: any,id:string) => {
-  const pinqueryToken = Cookies.get("pinquery_token");
-  try {
-    const response = await fetch(
-      `https://www.careerzai.com/v1/resume/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${pinqueryToken}`, // Include the Authorization token
-        },
-        body: JSON.stringify(formData), // Convert the data to a JSON string
-      }
-    );
 
-    if (!response.ok) {
-      throw new Error(`Failed to send data: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    console.log("Data sent successfully:", result);
-  } catch (error: any) {
-    console.error("Error sending data:", error.message);
-  }
-};
 
 
 const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({ workExperiences,_id }) => {
@@ -113,8 +91,15 @@ const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({ workExper
     setIsFormOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    setWorkList((prev) => prev.filter((work) => work._id !== id));
+  const handleDelete = (id: string|null) => {
+    setWorkList((prev) =>{ 
+      const data={work: prev.filter((work) => work._id !== id)}
+
+
+      handleResume(data,_id)
+   return   data.work
+    
+    });
   };
 
   const handleSave = async(work: WorkExperience) => {
@@ -122,17 +107,18 @@ const WorkExperienceSection: React.FC<WorkExperienceSectionProps> = ({ workExper
     if (currentWork._id) {
       setWorkList((prev) =>{
         data.work = prev.map((w) => (w._id === currentWork._id ? { ...work, _id: currentWork._id } : w))
-       return prev.map((w) => (w._id === currentWork._id ? { ...work, _id: currentWork._id } : w))
+      
+        handleResume(data,_id)
+        return prev.map((w) => (w._id === currentWork._id ? { ...work, _id: currentWork._id } : w))
    
       });
     } else {
-      setWorkList((prev) =>{
-        data.work=[...prev, { ...work, _id: Date.now().toString() }]
-        return [...prev, { ...work, _id: Date.now().toString() }]
-      
-      });
+      data.work=[...workList, { ...work, _id: null }]
+     const res= await handleResume(data,_id)
+
+      setWorkList(res.work);
     }
-   await handleResume(data,_id)
+  
     setIsFormOpen(false);
   };
 
@@ -216,6 +202,18 @@ const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({ initialData, on
               onChange={handleChange}
             />
           </div>
+
+          <div className="mb-4">
+            <InputField
+             options={[]}
+              label="Description"
+              name="description"
+              placeholder="description"
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </div>
+
           <div className="mb-4">
             <InputField
             placeholder={""}

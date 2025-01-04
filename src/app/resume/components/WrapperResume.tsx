@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from 'react';
 import AchievementsSection from './AchievementsSection';
 import CertificationSection from './CertificationSection';
 import EducationSection from './EducationSection';
@@ -89,6 +90,8 @@ console.log(userProfile.resumeUrl)
 
 
 
+
+
 if (Object.keys(userProfile).length === 0) {
  return <p>Loading</p>
 }
@@ -107,17 +110,16 @@ if (Object.keys(userProfile).length === 0) {
 
 
 
-   
   return (
     <div className="py-10 max-w-[1340px] mx-auto">
       <div className="grid md:grid-cols-2 grid-cols-1 gap-10 px-4">
         <div className='flex flex-col gap-8'>
           <ProfileCard profile={profile} />
           <div className=" bg-white rounded-lg shadow-md ">
-          <AchievementsSection achievements={userProfile.Achievements}/>
+          <AchievementsSection achievements={userProfile.Achievements} _id={userProfile._id}/>
           </div>
 
-          <Skills skills={userProfile.skills}/>
+          <Skills initialSkills={userProfile.skills} _id={userProfile._id}/>
 
           {/* <Languages/> */}
         </div>
@@ -132,20 +134,21 @@ if (Object.keys(userProfile).length === 0) {
 <hr className="border-black"/>
 <WorkExperienceSection workExperiences={userProfile.work} _id={userProfile._id} />
 <hr className="border-black"/>
-<ProjectsSection projects={userProfile.projects}/>
+<ProjectsSection projects={userProfile.projects} _id={userProfile._id}/>
 <hr className="border-black"/>
-<CertificationSection certifications={userProfile.certifications}/>
+<CertificationSection certifications={userProfile.certifications} _id={userProfile._id}/>
 <hr className="border-black"/>
-<SocialLinksSection socialLinks={userProfile.links}/>
+<SocialLinksSection socialLinks={userProfile.links} _id={userProfile._id}/>
 </div>
         
         </div>
       </div>
-      <ResumeButtons url={userProfile.resumeUrl}/>
-      <TemplateSelector resumePdfKey={userProfile.resumePdfKey}
+      <ResumeButtons url={userProfile.resumeUrl} resumePdfKey={userProfile.resumePdfKey}
+selectedResumeTemplate={userProfile.selectedResumeTemplate}/>
+      {/* <TemplateSelector resumePdfKey={userProfile.resumePdfKey}
 selectedResumeTemplate={userProfile.selectedResumeTemplate}
 
-      />
+      /> */}
     </div>
 
     

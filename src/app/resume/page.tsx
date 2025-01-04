@@ -219,6 +219,11 @@ resumeValidate()
 
   
 },[isResume])
+// if(!isResume){
+//   return (
+//     <ResumeForm />
+// )
+// }
 
   console.log(resume)
   return (
@@ -227,7 +232,8 @@ resumeValidate()
       {/* <ProfileForm/> */}
 {!isResume && <ResumeForm />}
 
-{isResume && resume ?<WrapperResume userProfile={resume}/>:<ResumeBuilderSkeleton/>}
+{isResume && resume ?<WrapperResume userProfile={resume}/>:""}
+{isResume && !resume && <ResumeBuilderSkeleton />}
       <Footer/>
 
 

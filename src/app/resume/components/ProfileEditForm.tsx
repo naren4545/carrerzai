@@ -128,7 +128,20 @@ console.log(formData)
           />
        
 
-         
+       <div>
+              <InputField
+                label="Gender"
+                name="userGender"
+                options={[
+                  { label: "Male", value: "male" },
+                  { label: "Female", value: "female" },
+                  { label: "Other", value: "other" },]}
+                  type='radio'
+                placeholder="Enter your last name"
+                value={formData.userGender}
+                onChange={handleChange}
+              />
+            </div>
 
 
 <div className='text-center'>
