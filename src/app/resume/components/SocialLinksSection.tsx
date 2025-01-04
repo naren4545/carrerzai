@@ -26,7 +26,7 @@ const SocialLinkCard: React.FC<SocialLinkCardProps> = ({ link, onEdit, onDelete 
       <div>
         <h3 className="text-xl font-medium">{link.network}</h3>
         <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-          {link.url}
+         Follow on {link.network}
         </a>
       </div>
     </div>
