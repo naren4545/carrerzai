@@ -112,7 +112,7 @@ if (Object.keys(userProfile).length === 0) {
 
   return (
     <div className="py-10 max-w-[1340px] mx-auto">
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-10 px-4">
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-10 px-4">
         <div className='flex flex-col gap-8'>
           <ProfileCard profile={profile} />
           <div className=" bg-white rounded-lg shadow-md ">
