@@ -1,7 +1,7 @@
    
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import ApplicationMobileCard from "./components/ApplicationMobileCard";
+
 import JobApplications from "./components/Applications";
 
 

@@ -96,7 +96,7 @@ return <JobApplicationsSkeleton/>
   return (
     <div className="max-w-[1356px] mx-auto py-10 p-4 ">
       {/* Grid Header */}
-      <h1 className="text-5xl   font-normal text-center">My Applications</h1>
+      <h1 className="text-5xl   font-normal text-center md:block hidden">My Applications</h1>
       <div className="shadow-xl py-8 md:block hidden">
       <div className="grid py-10 grid-cols-5 lg:text-[32px] lg:leading-10 text-xl  text-left font-semibold px-4 border-b border-black">
         <div>Job Title</div>
